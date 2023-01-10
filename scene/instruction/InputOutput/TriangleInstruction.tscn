@@ -1,0 +1,78 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccjk454bm8rcf"]
+
+[ext_resource type="Script" path="res://scene/instruction/InputOutput/TriangleInstruction.gd" id="1_xd6nv"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_ogyr7"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_rfxov"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_tl2di"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_i7tcs"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_hh6o4"]
+
+[node name="TriangleInstruction" type="Panel"]
+script = ExtResource("1_xd6nv")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_ogyr7")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_rfxov")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Draw"
+script = ExtResource("4_tl2di")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_i7tcs")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Triangle       x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_hh6o4")]
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "y"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_hh6o4")]
+
+[node name="Label3" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "x2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput3" parent="BaseRow/BaseLineColor" instance=ExtResource("6_hh6o4")]
+
+[node name="Label4" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "y2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput4" parent="BaseRow/BaseLineColor" instance=ExtResource("6_hh6o4")]
+
+[node name="Label5" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "x3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput5" parent="BaseRow/BaseLineColor" instance=ExtResource("6_hh6o4")]
+
+[node name="Label6" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "y3"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="TextInput6" parent="BaseRow/BaseLineColor" instance=ExtResource("6_hh6o4")]

@@ -1,0 +1,112 @@
+[gd_scene load_steps=8 format=3 uid="uid://bme07ttnnyfls"]
+
+[ext_resource type="Script" path="res://scene/instruction/BlockControl/RadarInstruction.gd" id="1_pcanr"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_nxtal"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_akpi0"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_fee05"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_6kuwv"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_y40ng"]
+[ext_resource type="PackedScene" uid="uid://cb6l6keyicm1c" path="res://scene/instruction/Base/SelectBox.tscn" id="7_gsyma"]
+
+[node name="RadarInstruction" type="Panel"]
+script = ExtResource("1_pcanr")
+
+[node name="BaseLine" parent="." instance=ExtResource("3_akpi0")]
+
+[node name="ColorLabel" type="Label" parent="BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Radar"
+script = ExtResource("4_fee05")
+
+[node name="BaseLineColor" parent="." instance=ExtResource("5_6kuwv")]
+
+[node name="BaseRow" parent="BaseLineColor" instance=ExtResource("2_nxtal")]
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 576.0
+offset_top = 324.0
+offset_right = 577.0
+offset_bottom = 325.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="BaseLineColor" parent="BaseLineColor/BaseRow" instance=ExtResource("5_6kuwv")]
+
+[node name="Label" type="Label" parent="BaseLineColor/BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "from"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput" parent="BaseLineColor/BaseRow/BaseLineColor" instance=ExtResource("6_y40ng")]
+
+[node name="Label2" type="Label" parent="BaseLineColor/BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "target"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectBox" parent="BaseLineColor/BaseRow/BaseLineColor" instance=ExtResource("7_gsyma")]
+
+[node name="Label3" type="Label" parent="BaseLineColor/BaseRow/BaseLineColor"]
+offset_right = 47.0
+offset_bottom = 26.0
+text = "and"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectBox2" parent="BaseLineColor/BaseRow/BaseLineColor" instance=ExtResource("7_gsyma")]
+
+[node name="Label4" type="Label" parent="BaseLineColor/BaseRow/BaseLineColor"]
+offset_right = 47.0
+offset_bottom = 26.0
+text = "and"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectBox3" parent="BaseLineColor/BaseRow/BaseLineColor" instance=ExtResource("7_gsyma")]
+
+[node name="BaseLineColor2" parent="BaseLineColor/BaseRow" instance=ExtResource("5_6kuwv")]
+offset_left = -576.5
+offset_top = -324.5
+offset_right = -462.5
+offset_bottom = -281.5
+
+[node name="Label" type="Label" parent="BaseLineColor/BaseRow/BaseLineColor2"]
+offset_left = 0.5
+offset_top = 0.5
+offset_right = 47.5
+offset_bottom = 26.5
+text = "order"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput" parent="BaseLineColor/BaseRow/BaseLineColor2" instance=ExtResource("6_y40ng")]
+
+[node name="Label2" type="Label" parent="BaseLineColor/BaseRow/BaseLineColor2"]
+offset_left = 0.5
+offset_top = 0.5
+offset_right = 47.5
+offset_bottom = 26.5
+text = "sort"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectBox" parent="BaseLineColor/BaseRow/BaseLineColor2" instance=ExtResource("7_gsyma")]
+
+[node name="Label3" type="Label" parent="BaseLineColor/BaseRow/BaseLineColor2"]
+offset_left = 0.5
+offset_top = 0.5
+offset_right = 47.5
+offset_bottom = 26.5
+text = "output"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput3" parent="BaseLineColor/BaseRow/BaseLineColor2" instance=ExtResource("6_y40ng")]

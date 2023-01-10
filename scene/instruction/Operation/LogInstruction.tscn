@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://3rbyi53eryaq"]
+
+[ext_resource type="Script" path="res://scene/instruction/Operation/LogInstruction.gd" id="1_p6vlk"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_fpqd1"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_7gfb2"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_vk2rp"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_yoaya"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_8b34l"]
+
+[node name="LogInstruction" type="Panel"]
+script = ExtResource("1_p6vlk")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_fpqd1")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_7gfb2")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Log"
+script = ExtResource("4_vk2rp")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_yoaya")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_8b34l")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "log"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_8b34l")]

@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://c7pax6e0814k1"]
+
+[ext_resource type="Script" path="res://scene/instruction/Operation/OrInstruction.gd" id="1_lb0u7"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_uamat"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_fgaac"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_ka676"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_1xmcl"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_us152"]
+
+[node name="OrInstruction" type="Panel"]
+script = ExtResource("1_lb0u7")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_uamat")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_fgaac")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Or"
+script = ExtResource("4_ka676")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_1xmcl")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_us152")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_us152")]
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "or"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput3" parent="BaseRow/BaseLineColor" instance=ExtResource("6_us152")]

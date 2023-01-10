@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://3qucm4c8t2uu"]
+
+[ext_resource type="Script" path="res://scene/instruction/FlowControl/WaitInstruction.gd" id="1_je3uh"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_jf5vp"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_1mv5c"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_24ya2"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_ccsks"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_7qq0f"]
+
+[node name="WaitInstruction" type="Panel"]
+script = ExtResource("1_je3uh")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_jf5vp")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_1mv5c")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Wait"
+script = ExtResource("4_24ya2")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_ccsks")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_7qq0f")]
+offset_left = 575.5
+offset_top = 323.5
+offset_right = 575.5
+offset_bottom = 323.5
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "sec"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://bs7ej5srshsuo"]
+
+[ext_resource type="Script" path="res://scene/instruction/InputOutput/StrokeInstruction.gd" id="1_62jww"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_hxl6t"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_r04ur"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_l4337"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_s0ou4"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_2xh8m"]
+
+[node name="StrokeInstruction" type="Panel"]
+script = ExtResource("1_62jww")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_hxl6t")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_r04ur")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Draw"
+script = ExtResource("4_l4337")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_s0ou4")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Stroke"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_2xh8m")]

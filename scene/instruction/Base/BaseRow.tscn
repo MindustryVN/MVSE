@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://l3lvpw0vs5vw"]
+
+[ext_resource type="Script" path="res://scene/instruction/Base/BaseRow.gd" id="1_sm23g"]
+
+[node name="BaseRow" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = -575.0
+offset_bottom = -323.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_sm23g")

@@ -1,0 +1,547 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+_global_script_classes=[{
+"base": "Instruction",
+"class": &"ACosInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/ACosInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ASinInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/ASinInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ATanInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/ATanInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"AbsInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/AbsInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"AndInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/AndInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"AngleInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/AngleInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"BAndInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/BAndInstruction.gd"
+}, {
+"base": "Control",
+"class": &"BaseLine",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/BaseLine.gd"
+}, {
+"base": "Panel",
+"class": &"BaseLineColor",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/BaseLineColor.gd"
+}, {
+"base": "Control",
+"class": &"BaseRow",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/BaseRow.gd"
+}, {
+"base": "Instruction",
+"class": &"BitShiftLeftInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/BitShiftLeftInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"BitShiftRightInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/BitShiftRightInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"CeilInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/CeilInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ClearInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/ClearInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ColInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/ColInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ColorInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/ColorInstruction.gd"
+}, {
+"base": "Label",
+"class": &"ColorLabel",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/ColorLabel.gd"
+}, {
+"base": "Instruction",
+"class": &"ConfigInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/ConfigInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ControlColorInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/ColorInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"CosInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/CosInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"DivInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/DivInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"DrawFlushInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/DrawFlushInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"EnableInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/EnableInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"EndInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/FlowControl/EndInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"EqualInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/EqualInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"FlipInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/FlipInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"FloorInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/FloorInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"GetLinkInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/GetLinkInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"GreaterThanEqualInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/GreaterThanEqualInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"GreaterThanInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/GreaterThanInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"IDivInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/IDivInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ImageInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/ImageInstruction.gd"
+}, {
+"base": "Panel",
+"class": &"Instruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/Instruction.gd"
+}, {
+"base": "Panel",
+"class": &"InstructionInput",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/InstructionInput.gd"
+}, {
+"base": "Panel",
+"class": &"InstructionOutput",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/InstructionOutput.gd"
+}, {
+"base": "Instruction",
+"class": &"JumpInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/FlowControl/JumpInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"LenInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/LenInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"LessThanEqualInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/LessThanEqualInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"LessThanInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/LessThanInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"LineInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/StrokeInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"LinePolyInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/LinePolyInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"LineRectInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/LineRectInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"LinesInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/LineInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"Log10Instruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/Log10Instruction.gd"
+}, {
+"base": "Instruction",
+"class": &"LogInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/LogInstruction.gd"
+}, {
+"base": "Control",
+"class": &"LongTextInput",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/LongTextInput.gd"
+}, {
+"base": "Instruction",
+"class": &"LookupInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/LookupInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"MaxInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/MaxInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"MinInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/MinInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ModInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/ModInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"MulInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/MulInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"NoiseInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/NoiseInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"NotInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/NotInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"OrInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/OrInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"PlusInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/PlusInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"PolyInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/PolyInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"PowInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/PowInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"PrintFlushInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/PrintFlushInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"PrintInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/PrintInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"RadarInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/RadarInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"RandInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/RandInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ReadInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/ReadInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"RectInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/RectInstruction.gd"
+}, {
+"base": "MenuButton",
+"class": &"SelectBox",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/SelectBox.gd"
+}, {
+"base": "Instruction",
+"class": &"SensorInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/SensorInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"SetInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/SetInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ShootInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/ShootInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"ShootpInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/BlockControl/ShootpInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"SinInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/SinInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"SqrtInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/SqrtInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"StartInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/FlowControl/StartInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"StopInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/FlowControl/StopInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"StrictEqualInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/StrictEqualInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"SubInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/SubInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"TanInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/TanInstruction.gd"
+}, {
+"base": "Control",
+"class": &"TextInput",
+"language": &"GDScript",
+"path": "res://scene/instruction/Base/TextInput.gd"
+}, {
+"base": "Instruction",
+"class": &"TriangleInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/TriangleInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"WaitInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/FlowControl/WaitInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"WriteInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/InputOutput/WriteInstruction.gd"
+}, {
+"base": "Instruction",
+"class": &"XorInstruction",
+"language": &"GDScript",
+"path": "res://scene/instruction/Operation/XorInstruction.gd"
+}]
+_global_script_class_icons={
+"ACosInstruction": "",
+"ASinInstruction": "",
+"ATanInstruction": "",
+"AbsInstruction": "",
+"AndInstruction": "",
+"AngleInstruction": "",
+"BAndInstruction": "",
+"BaseLine": "",
+"BaseLineColor": "",
+"BaseRow": "",
+"BitShiftLeftInstruction": "",
+"BitShiftRightInstruction": "",
+"CeilInstruction": "",
+"ClearInstruction": "",
+"ColInstruction": "",
+"ColorInstruction": "",
+"ColorLabel": "",
+"ConfigInstruction": "",
+"ControlColorInstruction": "",
+"CosInstruction": "",
+"DivInstruction": "",
+"DrawFlushInstruction": "",
+"EnableInstruction": "",
+"EndInstruction": "",
+"EqualInstruction": "",
+"FlipInstruction": "",
+"FloorInstruction": "",
+"GetLinkInstruction": "",
+"GreaterThanEqualInstruction": "",
+"GreaterThanInstruction": "",
+"IDivInstruction": "",
+"ImageInstruction": "",
+"Instruction": "",
+"InstructionInput": "",
+"InstructionOutput": "",
+"JumpInstruction": "",
+"LenInstruction": "",
+"LessThanEqualInstruction": "",
+"LessThanInstruction": "",
+"LineInstruction": "",
+"LinePolyInstruction": "",
+"LineRectInstruction": "",
+"LinesInstruction": "",
+"Log10Instruction": "",
+"LogInstruction": "",
+"LongTextInput": "",
+"LookupInstruction": "",
+"MaxInstruction": "",
+"MinInstruction": "",
+"ModInstruction": "",
+"MulInstruction": "",
+"NoiseInstruction": "",
+"NotInstruction": "",
+"OrInstruction": "",
+"PlusInstruction": "",
+"PolyInstruction": "",
+"PowInstruction": "",
+"PrintFlushInstruction": "",
+"PrintInstruction": "",
+"RadarInstruction": "",
+"RandInstruction": "",
+"ReadInstruction": "",
+"RectInstruction": "",
+"SelectBox": "",
+"SensorInstruction": "",
+"SetInstruction": "",
+"ShootInstruction": "",
+"ShootpInstruction": "",
+"SinInstruction": "",
+"SqrtInstruction": "",
+"StartInstruction": "",
+"StopInstruction": "",
+"StrictEqualInstruction": "",
+"SubInstruction": "",
+"TanInstruction": "",
+"TextInput": "",
+"TriangleInstruction": "",
+"WaitInstruction": "",
+"WriteInstruction": "",
+"XorInstruction": ""
+}
+
+[application]
+
+config/name="MindustryVisualScripting"
+run/main_scene="res://scene/menu/Editor/Editor.tscn"
+config/features=PackedStringArray("4.0", "Mobile")
+config/icon="res://asset/icon.svg"
+
+[autoload]
+
+Config="*res://scene/menu/Config.gd"
+
+[input]
+
+UP={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"unicode":119,"echo":false,"script":null)
+]
+}
+DOWN={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"unicode":0,"echo":false,"script":null)
+]
+}
+RIGHT={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"unicode":0,"echo":false,"script":null)
+]
+}
+LEFT={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"unicode":0,"echo":false,"script":null)
+]
+}
+ZOOM_IN={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":4,"pressed":false,"double_click":false,"script":null)
+]
+}
+ZOOM_OUT={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":5,"pressed":false,"double_click":false,"script":null)
+, Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":6,"pressed":false,"double_click":false,"script":null)
+]
+}
+CLICK={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"pressed":false,"double_click":false,"script":null)
+]
+}
+
+[rendering]
+
+renderer/rendering_method="mobile"

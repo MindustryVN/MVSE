@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cb6l6keyicm1c"]
+
+[ext_resource type="Script" path="res://scene/instruction/Base/SelectBox.gd" id="1_q5k0g"]
+
+[node name="SelectBox" type="MenuButton"]
+script = ExtResource("1_q5k0g")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0

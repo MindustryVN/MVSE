@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://b2nt4t35vb11l"]
+
+[ext_resource type="Script" path="res://scene/instruction/Operation/MaxInstruction.gd" id="1_0qp5d"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_mvxh6"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_qdy6d"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_i4gna"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_cv7ur"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_ij8q0"]
+
+[node name="MaxInstruction" type="Panel"]
+script = ExtResource("1_0qp5d")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_mvxh6")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_qdy6d")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Max"
+script = ExtResource("4_i4gna")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_cv7ur")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_ij8q0")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "max"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_ij8q0")]
+
+[node name="TextInput3" parent="BaseRow/BaseLineColor" instance=ExtResource("6_ij8q0")]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://glslqykidf5i"]
+
+[ext_resource type="Script" path="res://scene/instruction/FlowControl/StopInstruction.gd" id="1_scb5r"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_wg10c"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_37qrh"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_fdwkk"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_6n8tx"]
+
+[node name="StopInstruction" type="Panel"]
+script = ExtResource("1_scb5r")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_wg10c")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_37qrh")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Stop"
+script = ExtResource("4_fdwkk")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_6n8tx")]

@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://dd4xxh5s4y2g"]
+
+[ext_resource type="Script" path="res://scene/instruction/Operation/AbsInstruction.gd" id="1_7a6vh"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_7ojgb"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_xxb6n"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_ry873"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_igd57"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_h2w75"]
+
+[node name="AbsInstruction" type="Panel"]
+script = ExtResource("1_7a6vh")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_7ojgb")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_xxb6n")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Abs"
+script = ExtResource("4_ry873")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_igd57")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_h2w75")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "abs"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_h2w75")]

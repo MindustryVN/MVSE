@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://bhn473iku1tn4"]
+
+[ext_resource type="Script" path="res://scene/instruction/Operation/NotInstruction.gd" id="1_8w2e8"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_lbu85"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_x2x3f"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_al16y"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_ftuvf"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_lkjg7"]
+
+[node name="NotInstruction" type="Panel"]
+script = ExtResource("1_8w2e8")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_lbu85")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_x2x3f")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Not"
+script = ExtResource("4_al16y")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_ftuvf")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_lkjg7")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_lkjg7")]
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "not"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput3" parent="BaseRow/BaseLineColor" instance=ExtResource("6_lkjg7")]

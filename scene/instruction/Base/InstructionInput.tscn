@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://by2cwdnm05fbh"]
+
+[ext_resource type="Script" path="res://scene/instruction/Base/InstructionInput.gd" id="1_5uftg"]
+
+[node name="InstructionInput" type="Panel"]
+script = ExtResource("1_5uftg")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

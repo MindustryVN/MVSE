@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://d00c4v5otynh"]
+
+[ext_resource type="Script" path="res://scene/instruction/Operation/RandInstruction.gd" id="1_ds77d"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_f4eva"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_xyvbs"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_ge6pq"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_puhgm"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_utlw5"]
+
+[node name="RandInstruction" type="Panel"]
+script = ExtResource("1_ds77d")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_f4eva")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_xyvbs")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Rand"
+script = ExtResource("4_ge6pq")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_puhgm")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_utlw5")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "rand"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_utlw5")]

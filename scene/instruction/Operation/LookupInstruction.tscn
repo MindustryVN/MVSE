@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://crbobwkgnov23"]
+
+[ext_resource type="Script" path="res://scene/instruction/Operation/LookupInstruction.gd" id="1_y708e"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_d1roj"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_0o7nb"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_nj6iu"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_n8h8y"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_tlpr2"]
+
+[node name="LookupInstruction" type="Panel"]
+script = ExtResource("1_y708e")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_d1roj")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_0o7nb")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "LookUp"
+script = ExtResource("4_nj6iu")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_n8h8y")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_tlpr2")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "= lookup"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_tlpr2")]
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "#"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput3" parent="BaseRow/BaseLineColor" instance=ExtResource("6_tlpr2")]

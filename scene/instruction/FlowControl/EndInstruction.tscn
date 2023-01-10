@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://c524g1v8ididm"]
+
+[ext_resource type="Script" path="res://scene/instruction/FlowControl/EndInstruction.gd" id="1_8mukb"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_uuc0a"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_pqs2q"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_v7njs"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_iwqlm"]
+
+[node name="EndInstruction" type="Panel"]
+script = ExtResource("1_8mukb")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_uuc0a")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_pqs2q")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "End"
+script = ExtResource("4_v7njs")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_iwqlm")]

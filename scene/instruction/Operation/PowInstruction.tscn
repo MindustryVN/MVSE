@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://k1e3kelh3n80"]
+
+[ext_resource type="Script" path="res://scene/instruction/Operation/PowInstruction.gd" id="1_mvqjt"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_teasb"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_lj3t5"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_nowh4"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_2opx7"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_lq5d0"]
+
+[node name="PowInstruction" type="Panel"]
+script = ExtResource("1_mvqjt")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_teasb")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_lj3t5")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Pow"
+script = ExtResource("4_nowh4")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_2opx7")]
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_lq5d0")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_lq5d0")]
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "^"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextInput3" parent="BaseRow/BaseLineColor" instance=ExtResource("6_lq5d0")]

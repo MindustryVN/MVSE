@@ -1,0 +1,25 @@
+[gd_scene load_steps=7 format=3 uid="uid://bhpgjvtvakcaw"]
+
+[ext_resource type="Script" path="res://scene/instruction/InputOutput/PrintInstruction.gd" id="1_i30u8"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="1_jylxj"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="2_6vpei"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="3_cobdp"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="4_wok7p"]
+[ext_resource type="PackedScene" uid="uid://c6jl10muldpo6" path="res://scene/instruction/Base/LongTextInput.tscn" id="6_qch7w"]
+
+[node name="PrintInstruction" type="Panel"]
+script = ExtResource("1_i30u8")
+
+[node name="BaseRow" parent="." instance=ExtResource("1_jylxj")]
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("2_6vpei")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Print"
+script = ExtResource("3_cobdp")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("4_wok7p")]
+
+[node name="LongTextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_qch7w")]

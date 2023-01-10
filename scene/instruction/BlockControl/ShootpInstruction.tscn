@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://bt40hwunuij6f"]
+
+[ext_resource type="Script" path="res://scene/instruction/BlockControl/ShootpInstruction.gd" id="1_ng7t6"]
+[ext_resource type="PackedScene" uid="uid://l3lvpw0vs5vw" path="res://scene/instruction/Base/BaseRow.tscn" id="2_ir6na"]
+[ext_resource type="PackedScene" uid="uid://pnn0iyl5fuil" path="res://scene/instruction/Base/BaseLine.tscn" id="3_i6gfr"]
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="4_a5ttd"]
+[ext_resource type="PackedScene" uid="uid://bnxr1d310gk3l" path="res://scene/instruction/Base/BaseLineColor.tscn" id="5_jlxdh"]
+[ext_resource type="PackedScene" uid="uid://cxkqo32fuxva3" path="res://scene/instruction/Base/TextInput.tscn" id="6_k75ng"]
+
+[node name="ShootpInstruction" type="Panel"]
+script = ExtResource("1_ng7t6")
+
+[node name="BaseRow" parent="." instance=ExtResource("2_ir6na")]
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="BaseLine" parent="BaseRow" instance=ExtResource("3_i6gfr")]
+
+[node name="ColorLabel" type="Label" parent="BaseRow/BaseLine"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Control"
+script = ExtResource("4_a5ttd")
+
+[node name="BaseLineColor" parent="BaseRow" instance=ExtResource("5_jlxdh")]
+
+[node name="Label" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "set shootp of "
+
+[node name="TextInput" parent="BaseRow/BaseLineColor" instance=ExtResource("6_k75ng")]
+
+[node name="Label2" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "x"
+
+[node name="TextInput2" parent="BaseRow/BaseLineColor" instance=ExtResource("6_k75ng")]
+
+[node name="Label3" type="Label" parent="BaseRow/BaseLineColor"]
+offset_right = 40.0
+offset_bottom = 26.0
+text = "y"
+
+[node name="TextInput3" parent="BaseRow/BaseLineColor" instance=ExtResource("6_k75ng")]
