@@ -5,8 +5,12 @@
 [sub_resource type="Gradient" id="Gradient_2s04v"]
 colors = PackedColorArray(0, 0, 0.67451, 1, 1, 0.2, 1, 1)
 
-[node name="InstructionOutput" type="Panel"]
+[node name="InstructionOutput" type="Node2D"]
 script = ExtResource("1_wy8q4")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="Line2D" type="Line2D" parent="."]
 top_level = true

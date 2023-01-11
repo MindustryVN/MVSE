@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxsf87g0xbsfk"]
+
+[ext_resource type="Script" path="res://scene/instruction/Base/CenterLabel.gd" id="1_abwpu"]
+
+[node name="CenterLabel" type="Label"]
+script = ExtResource("1_abwpu")

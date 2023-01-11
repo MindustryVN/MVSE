@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0eqet5lk8irb"]
+
+[ext_resource type="Script" path="res://scene/instruction/Base/ColorLabel.gd" id="1_21d0b"]
+
+[node name="ColorLabel" type="Label"]
+script = ExtResource("1_21d0b")

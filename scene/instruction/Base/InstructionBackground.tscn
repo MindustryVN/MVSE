@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqsxou151fxih"]
+
+[ext_resource type="Script" path="res://scene/instruction/Base/InstructionBackground.gd" id="1_2cdso"]
+
+[node name="InstructionBackground" type="Panel"]
+script = ExtResource("1_2cdso")

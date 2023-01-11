@@ -1,14 +1,14 @@
 extends Node2D
 
 # Global constant
-const BASE_HEIGHT : float = 80
-const BASE_WIDTH : float = 500
+const BASE_HEIGHT : float = 70
+const BASE_WIDTH : float = 450
 
 const BASE_MIN_HEIGHT : float = 20
 const BASE_MIN_WIDTH : float = 200
 
 const TEXT_BOX_HEIGHT : float = 40
-const TEXT_BOX_WIDTH : float = 140
+const TEXT_BOX_WIDTH : float = 100
 
 const COMPONENT_SPACE_X : float = 4
 const COMPONENT_SPACE_Y : float = 2
@@ -30,7 +30,7 @@ const MAX_WORLD_SIZE : float = 8000
 const TOOL_BAR_HEIGHT : float = 20
 
 const EDITOR_FONT_SIZE : int = 12
-const EDITOR_SCHEMATIC_SCALE = 0.5
+const EDITOR_SCHEMATIC_SCALE = 0.75
 
 const INSTRUCTION_COLOR = {
 	OPERATIONS = Color("877bad"),
@@ -38,6 +38,18 @@ const INSTRUCTION_COLOR = {
 	BLOCK_CONTROL = Color("d4816b"),
 	FLOW_CONTROL = Color("6bb2b2"),
 	UNIT_CONTROL = Color("c7b59d")
+}
+
+const COMPONENT_TYPE = {
+	"InstructionBackground" = "res://scene/instruction/Base/InstructionBackground.tscn",
+	"BaseLine" = "res://scene/instruction/Base/BaseLine.tscn",
+	"BaseLineColor" = "res://scene/instruction/Base/BaseLineColor.tscn",
+	"BaseRow" = "res://scene/instruction/Base/BaseRow.tscn",
+	"CenterLabel" = "res://scene/instruction/Base/CenterLabel.tscn",
+	"ColorLabel" = "res://scene/instruction/Base/ColorLabel.tscn",
+	"SelectBox" = "res://scene/instruction/Base/SelectBox.tscn",
+	"TextBox" = "res://scene/instruction/Base/Textbox.tscn",
+	"LongTextBox" = "res://scene/instruction/Base/LongTextBox.tscn"
 }
 
 const OPERATIONS = ["==", "not", "===", ">", ">=", "<" , "<="]
@@ -89,20 +101,22 @@ var current_camera : Camera2D = null
 var is_panning : bool = false
 
 var is_resizing : bool = false
-var is_crolling : bool = false
+var is_scrolling : bool = false
 
 var zoom : float = 1
 
+var current_line = -1
+
 signal on_content_change
 
-func get_node_at_mouse_position(node_group : String):
+func get_node_at_position(node_group : String, node_position : Vector2):
 	var obj = null
 	var node = get_tree().get_nodes_in_group(node_group)
 	var i : int = node.size() - 1
 	while(i >= 0):
 		obj = node[i]
-		if not (obj is Window):
-			if obj.on_click():
+		if obj.visible:
+			if obj.on_click(node_position):
 				return obj
 		i -= 1
 	return null

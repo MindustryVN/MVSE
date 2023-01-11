@@ -7,6 +7,16 @@
 [ext_resource type="Script" path="res://scene/menu/Editor/SchematicContainer.gd" id="5_txyhk"]
 [ext_resource type="Script" path="res://scene/menu/Editor/SettingUI.gd" id="6_4411a"]
 
+[sub_resource type="Environment" id="Environment_stjhn"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 1.53
+glow_strength = 0.92
+glow_bloom = 0.27
+glow_blend_mode = 0
+glow_hdr_threshold = 0.0
+glow_hdr_scale = 1.18
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vy6wh"]
 bg_color = Color(0, 0, 0, 0.576471)
 border_width_left = 1
@@ -36,29 +46,22 @@ bg_color = Color(0, 0, 0, 1)
 VBoxContainer/constants/separation = 0
 VBoxContainer/styles/StyleBox = SubResource("StyleBoxFlat_t28jo")
 
-[sub_resource type="Environment" id="Environment_stjhn"]
-background_mode = 3
-glow_enabled = true
-glow_intensity = 1.53
-glow_strength = 0.92
-glow_bloom = 0.27
-glow_blend_mode = 0
-glow_hdr_threshold = 0.0
-glow_hdr_scale = 1.18
-
 [node name="Editor" type="Node2D"]
 script = ExtResource("1_nvkhc")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_stjhn")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 script = ExtResource("2_gaav4")
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
+layer = 0
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="EditorUI"]
 
 [node name="BackgroundColor" type="ColorRect" parent="EditorUI/ParallaxBackground"]
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -66,9 +69,10 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="LiveCodePanel" type="PanelContainer" parent="EditorUI"]
-visible = false
-offset_right = 48.0
-offset_bottom = 33.0
+offset_left = 793.0
+offset_top = 5.0
+offset_right = 1149.0
+offset_bottom = 644.0
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_vy6wh")
 script = ExtResource("3_4fm5q")
@@ -87,37 +91,27 @@ theme = ExtResource("4_0xgyu")
 text = "Copy"
 
 [node name="SchematicPanel" type="PanelContainer" parent="EditorUI"]
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_top = 31.0
 offset_right = 277.0
-grow_vertical = 2
+offset_bottom = 644.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ikp72")
 script = ExtResource("5_txyhk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SchematicPanel"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="EditorUI/SchematicPanel/VBoxContainer"]
+[node name="SearchBox" type="LineEdit" parent="EditorUI/SchematicPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_styles/normal = SubResource("StyleBoxFlat_qh7x1")
 theme_override_styles/focus = SubResource("StyleBoxFlat_qh7x1")
-text = "Text schematic "
+placeholder_text = "Schematic name"
 caret_blink = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/SchematicPanel/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="PanelContainer" type="Control" parent="EditorUI/SchematicPanel/VBoxContainer/HBoxContainer"]
+[node name="PanelContainer" type="Control" parent="EditorUI/SchematicPanel/VBoxContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="VSlider" type="VSlider" parent="EditorUI/SchematicPanel/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
+size_flags_vertical = 3
 
 [node name="SettingUI" type="VFlowContainer" parent="EditorUI"]
 offset_right = 1154.0
@@ -138,10 +132,6 @@ theme = SubResource("Theme_gm537")
 layout_mode = 2
 text = "Show live code panel"
 
-[node name="Schematic" type="CheckBox" parent="EditorUI/SettingUI/VBoxContainer"]
-layout_mode = 2
-text = "Show schematic panel"
-
 [node name="VFlowContainer" type="VFlowContainer" parent="EditorUI/SettingUI"]
 layout_mode = 2
 
@@ -160,7 +150,5 @@ layout_mode = 2
 size_flags_horizontal = 8
 vertical_alignment = 1
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_stjhn")
-
 [connection signal="button_down" from="EditorUI/LiveCodePanel/GetCode" to="." method="_on_get_code_button_down"]
+[connection signal="text_changed" from="EditorUI/SchematicPanel/VBoxContainer/SearchBox" to="." method="_on_search_box_text_changed"]

@@ -2,9 +2,13 @@
 
 [ext_resource type="Script" path="res://scene/instruction/Base/InstructionInput.gd" id="1_5uftg"]
 
-[node name="InstructionInput" type="Panel"]
+[node name="InstructionInput" type="Node2D"]
 script = ExtResource("1_5uftg")
 
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
