@@ -13,7 +13,7 @@ var component : Dictionary = {}
 var disabled : bool = false
 
 var line = -1
-
+var iid = -1
 
 signal on_drag
 signal on_content_change
@@ -33,6 +33,7 @@ func _ready() -> void:
 	add_child(component["InstructionBackground"])
 	setup()
 	update(color)
+	on_ready.emit()
 
 func set_disable(value : bool) -> void:
 	disabled = value
@@ -82,7 +83,6 @@ func update(_color : Color):
 	for i in range(0, count):
 		if Config.is_instruction_component(children[i]):
 			children[i]._update(_color)
-	on_ready.emit()
 
 	
 func delete() -> void:

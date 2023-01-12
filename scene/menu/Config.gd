@@ -93,21 +93,22 @@ const TARGET_TYPES = ["any", "enemy", "player", "ally", "attacker", "flying", "g
 const SORT_TYPES = ["distance", "health", "shield", "armor", "maxHealth"]
 
 # Global variable
-
-var drag_focus = null
-var drag_offset : Vector2 = Vector2.ZERO
-
-var keyboard_focus = null
-
 var current_camera : Camera2D = null
-var is_panning : bool = false
 
+var drag_offset : Vector2 = Vector2.ZERO
+var drag_focus = null
+var keyboard_focus = null
+var is_panning : bool = false
 var is_resizing : bool = false
 var is_scrolling : bool = false
+var is_selecting : bool = false
+var select_start : Vector2
 
 var zoom : float = 1
+var mutex = Mutex.new()
 
 var current_line = -1
+var iid : int = 0
 
 signal on_content_change
 
@@ -123,7 +124,38 @@ func get_node_at_position(node_group : String, node_position : Vector2):
 		i -= 1
 	return null
 
+func get_node_in_rect(node_group : String, start_position : Vector2, end_position : Vector2):
+	var obj = null
+	var start = Vector2(min(start_position.x, end_position.x), min(start_position.y, end_position.y))
+	var end = Vector2(max(start_position.x, end_position.x), max(start_position.y, end_position.y))
+	var node = get_tree().get_nodes_in_group(node_group)
+	var i : int = node.size() - 1
+	var result : Array = []
+	while(i >= 0):
+		obj = node[i]
+		if obj.visible:
+			if is_inside(obj, start, end):
+				result.append(obj)
+		i -= 1
+	return result
+
+func is_inside(obj : Object, start_position : Vector2, end_position : Vector2):
+	if obj.global_position.x >= start_position.x and obj.global_position.x <= end_position.x and obj.global_position.y >= start_position.y and obj.global_position.y <= end_position.y:
+		return true
+	if obj.global_position.x + obj.get_size().x < start_position.x or obj.global_position.x + obj.get_size().x > end_position.x:
+		return false
+	if obj.global_position.y + obj.get_size().y < start_position.y or obj.global_position.y + obj.get_size().y > end_position.y:
+		return false
+	return true
+	
+	
 func is_instruction_component(ob) -> bool:
 	if ob.has_method("is_instruction"):
 		return ob.is_instruction()
 	return false
+
+func getIID() -> int:
+	mutex.lock()
+	iid += 1
+	mutex.unlock()
+	return iid 

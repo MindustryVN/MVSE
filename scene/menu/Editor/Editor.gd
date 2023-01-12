@@ -10,15 +10,21 @@ extends Node2D
 @onready var LOG_PANEL : PanelContainer = $EditorUI/LogPanel
 
 @onready var SCHEMATIC_CONTAINER  = $EditorUI/SchematicPanel/VBoxContainer/PanelContainer
+@onready var SELECT_RECTANGLE  = $SelectRectangle
+@onready var SELECT_RECTANGLE_SIZE = $SelectRectangle/Panel
 
 @onready var SETTING_UI = $EditorUI/SettingUI
 
 var instruction_dic : Dictionary = {}
 var instruction_ins : Array= []
+var instruction_selecting : Array = []
+
+var select_rectangle_size : Vector2= Vector2.ZERO
 
 var exception : Array = [
 	StartException.new(),
-	InstructionException.new()
+	InstructionException.new(),
+	InstructionLimitException.new()
 	]
 
 signal on_instruction_added
@@ -59,6 +65,7 @@ func add_preview_instruction():
 	"res://scene/instruction/Operation",
 	"res://scene/instruction/UnitControl"]
 	
+
 	for path in directory:
 		var dir =  DirAccess.open(path)
 		dir.list_dir_begin()
@@ -74,6 +81,7 @@ func add_preview_instruction():
 	
 	
 	var start = Vector2(Config.IO_CIRCLE_RADIUS * 2, 0)
+	
 	
 	for ins_name in instruction_dic.keys():
 		var ins : Instruction = load(instruction_dic[ins_name]).new(ins_name)
@@ -116,7 +124,8 @@ func _input(event):
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				on_click(get_global_mouse_position())
 			if event.button_index == MOUSE_BUTTON_RIGHT:
-				on_delete(get_global_mouse_position())
+				on_alternative_click(get_global_mouse_position())
+				
 		else:
 			on_release(get_global_mouse_position())
 			#Zoom
@@ -128,15 +137,28 @@ func _input(event):
 
 	elif event is InputEventMouseMotion:
 		on_drag(event.relative, get_global_mouse_position())
+	
+	if event is InputEventKey:
+		if event.is_pressed() and event.keycode == KEY_V:
+			paste_instruction(get_global_mouse_position())
+			
+		if event.is_pressed() and event.keycode == KEY_DELETE:
+			for i in instruction_selecting:
+				i.delete()
 
-func on_delete(delete_position : Vector2) -> void:
+func on_alternative_click(click_position : Vector2) -> void:
 	# Delete instruction
-	var obj = Config.get_node_at_position("Instruction", delete_position)
+	var obj = Config.get_node_at_position("Instruction", click_position)
 	if obj:
 		obj.delete()
 		await get_tree().process_frame
 		await get_tree().process_frame
 		on_instruction_deleted.emit()
+	else:
+		Config.is_selecting = true
+		Config.select_start = click_position
+		SELECT_RECTANGLE.global_position = click_position
+		SELECT_RECTANGLE_SIZE.size = Vector2.ZERO
 
 func on_zoom(zoom_value : float) -> void:
 	Config.current_camera = get_viewport().get_camera_2d()
@@ -151,6 +173,20 @@ func on_drag(drag_relative : Vector2, drag_position : Vector2) -> void:
 	LOG_PANEL.on_drag(LOG_PANEL.get_global_mouse_position())
 	
 	if Config.is_resizing:
+		return
+	if Config.is_selecting:
+		select_rectangle_size = abs(Config.select_start - drag_position)
+		if Config.select_start.x > drag_position.x:
+			SELECT_RECTANGLE.global_position.x = drag_position.x
+		else:
+			SELECT_RECTANGLE.global_position.x = Config.select_start.x
+		
+		if Config.select_start.y > drag_position.y:
+			SELECT_RECTANGLE.global_position.y = drag_position.y
+		else:
+			SELECT_RECTANGLE.global_position.y = Config.select_start.y
+		SELECT_RECTANGLE_SIZE.size = select_rectangle_size
+			
 		return
 	
 	if Config.is_scrolling:
@@ -200,15 +236,7 @@ func on_click(click_position : Vector2) -> void:
 	if SCHEMATIC_CONTAINER.get_global_rect().has_point(SCHEMATIC_CONTAINER.get_global_mouse_position()):
 		Config.drag_focus = get_schematic(click_position)
 		if Config.drag_focus:
-			var ins : Instruction = load(instruction_dic[Config.drag_focus.instruction_name]).new(Config.drag_focus.instruction_name)
-			ins.global_position = get_global_mouse_position()
-			ins.on_content_change.connect(update_live_code.bind())
-			ins.add_to_group("Instruction")
-			ins.add_to_group("Drag")
-			call_deferred("add_child", ins)
-			await ins.on_ready
-			Config.drag_focus = ins
-			on_instruction_added.emit()
+			Config.drag_focus = await add_instruction(Config.drag_focus.instruction_name)
 			return
 			
 	if SCHEMATIC_PANEL.get_global_rect().has_point(SCHEMATIC_PANEL.get_global_mouse_position()):
@@ -243,10 +271,61 @@ func on_release(release_position : Vector2):
 	if not Config.drag_focus == null:
 		if Config.drag_focus.has_method("drop"):
 			Config.drag_focus.drop()
-		Config.drag_focus = null
+			
+	if Config.is_selecting:
+		if release_position == Config.select_start:
+			SELECT_RECTANGLE.global_position = Vector2(Config.MAX_WORLD_SIZE,Config.MAX_WORLD_SIZE) * 2 # Outside world so user can't see it
+		else:
+			select_instruction(Config.select_start, release_position)
+		
+	Config.is_selecting = false
 	Config.is_panning = false
 	Config.is_scrolling = false
+	Config.drag_focus = null
+	
+func select_instruction(start : Vector2, end : Vector2):
+	instruction_selecting = Config.get_node_in_rect("Instruction", start, end)
 
+func paste_instruction(paste_position : Vector2):
+	if instruction_selecting.size() == 0:
+		return
+	var result : Dictionary = {}
+	var target_iid : int = -1
+	var start_position : Vector2 = instruction_selecting[0].global_position
+	var ins : Instruction
+	var current_ins : Instruction
+	var target_ins : Instruction
+	
+	for i in instruction_selecting:
+		ins = await add_instruction(i.instruction_name)
+		result[i.iid] = ins
+		ins.global_position = paste_position - start_position + i.global_position
+
+	await get_tree().process_frame
+	for i in instruction_selecting:
+		current_ins = result[i.iid]
+		for key in i.output.keys():
+			target_iid = i.output[key].get_target_iid()
+			if target_iid == -1:
+				continue
+			target_ins = result[target_iid]
+			if result.has(target_iid):
+				var target_input : String = i.output[key].get_target_name()
+				current_ins.output[key].connect_instruction(target_ins.input[target_input])
+
+
+func add_instruction(instruction_name : String) -> Instruction:
+	if get_tree().get_nodes_in_group("Instruction").size() >= 1000:
+		return
+	var ins : Instruction = load(instruction_dic[instruction_name]).new(instruction_name)
+	call_deferred("add_child", ins)
+	ins.on_content_change.connect(update_live_code.bind())
+	ins.add_to_group("Instruction")
+	ins.add_to_group("Drag")
+	ins.iid = Config.getIID()
+	await ins.on_ready
+	on_instruction_added.emit()
+	return ins
 
 func update_live_code() -> void:
 	if not LIVECODE_PANEL.visible:
@@ -297,7 +376,7 @@ func _on_search_box_text_changed(new_text: String) -> void:
 	var result : Array = []
 	var instruction : Array = get_tree().get_nodes_in_group("SchematicPreview")
 	for i in instruction:
-		i.global_position.x = -1000
+		i.global_position.x = Config.MAX_WORLD_SIZE * 2 # Outside world so user can't see it
 		i.hide()
 		if i.instruction_name.to_lower().begins_with(new_text):
 			if result.has(i):

@@ -94,21 +94,22 @@ func _cubic_bezier(p0: Vector2, p1: Vector2, p2: Vector2, p3: Vector2, t: float)
 	var s = r0.lerp(r1, t)
 	return s
 
-func connect_instruction(obj) -> void:
+func connect_instruction(obj : InstructionInput) -> void:
 	if obj == null or not obj.has_input():
 		reset()
 		return
 	target = obj
+
 	$Line2D.gradient = Gradient.new()
 	$Line2D.gradient.set_color(0, get_parent().color)
 	$Line2D.gradient.set_color(1, target.get_parent().color)
-	
 	if target.get_parent().on_drag.is_connected(drop.bind()):
 		return
 	
 	if target.get_parent().on_delete.is_connected(reset.bind()):
 		return
 	
+	update_line(get_start_position(), get_end_position())
 	target.get_parent().on_drag.connect(drop.bind())
 	target.get_parent().on_delete.connect(reset.bind())
 	get_parent().on_content_change.emit()
@@ -146,3 +147,16 @@ func get_size() -> Vector2:
 func set_name(value) -> void:
 	output_name = value
 	$Label.text = value
+
+func get_target_name() -> String:
+	if target == null:
+		return ""
+	return target.input_name
+
+func getIID() -> int:
+	return get_parent().iid
+
+func get_target_iid() -> int:
+	if target == null:
+		return -1
+	return target.getIID()

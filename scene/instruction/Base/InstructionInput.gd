@@ -3,6 +3,7 @@ extends Node2D
 
 var input_name : String
 
+
 func _ready():
 	var style = StyleBoxFlat.new()
 	style.set_bg_color(get_parent().color)
@@ -40,3 +41,6 @@ func get_size() -> Vector2:
 
 func on_click(click_position : Vector2) -> bool:
 	return Rect2(global_position, $Panel.size * scale).has_point(click_position)
+
+func getIID() -> int:
+	return get_parent().iid
