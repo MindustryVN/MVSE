@@ -21,8 +21,8 @@ func setup():
 	add_component("and2", "SelectBox", "line3").add_options(Config.TARGET_TYPES)
 	add_component("text5", "CenterLabel", "line3").text = "order"
 	add_component("order", "TextBox", "line3")
-	add_component("text6", "CenterLabel", "line3").text = "sort"
-	add_component("sort", "SelectBox", "line3").add_options(Config.SORT_TYPES)
+	add_component("text6", "CenterLabel", "line4").text = "sort"
+	add_component("sort", "SelectBox", "line4").add_options(Config.SORT_TYPES)
 	add_component("text7", "CenterLabel", "line4").text = "output"
 	add_component("output", "TextBox", "line4")
 

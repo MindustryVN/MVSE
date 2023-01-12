@@ -47,3 +47,6 @@ func unfocus():
 func set_disable(value : bool) -> void:
 	$Panel/LineEdit.editable = not value
 	
+
+func set_default(value : String) -> void:
+	$Panel/LineEdit.text = value

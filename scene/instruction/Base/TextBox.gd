@@ -24,7 +24,7 @@ func _update(color : Color):
 	var ins_style = StyleBoxFlat.new()
 	ins_style.set_bg_color(color)
 	$Panel/LineEdit/Panel.position = (Vector2(0, Config.TEXT_BOX_HEIGHT * 3.0/4))
-	$Panel/LineEdit/Panel.size = (Vector2(Config.TEXT_BOX_WIDTH * 0.95, Config.TEXT_BOX_HEIGHT/20))
+	$Panel/LineEdit/Panel.size = (Vector2(Config.TEXT_BOX_WIDTH * 0.95, Config.TEXT_BOX_HEIGHT/16))
 	$Panel/LineEdit/Panel.add_theme_stylebox_override("panel", ins_style)
 
 func get_content(default : String) -> String:
@@ -45,4 +45,6 @@ func unfocus():
 
 func set_disable(value : bool) -> void:
 	$Panel/LineEdit.editable = not value
-	
+
+func set_default(value : String) -> void:
+	$Panel/LineEdit.set_text(value)

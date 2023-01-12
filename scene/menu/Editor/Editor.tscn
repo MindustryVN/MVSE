@@ -1,11 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://c4p266v7ajwqq"]
+[gd_scene load_steps=13 format=3 uid="uid://bqc000t67w6tv"]
 
 [ext_resource type="Script" path="res://scene/menu/Editor/Editor.gd" id="1_nvkhc"]
-[ext_resource type="Script" path="res://scene/menu/CameraController.gd" id="2_gaav4"]
+[ext_resource type="Script" path="res://scene/menu/Editor/CameraController.gd" id="2_kwb2o"]
 [ext_resource type="Script" path="res://scene/menu/Editor/LiveCodeContainer.gd" id="3_4fm5q"]
 [ext_resource type="Theme" uid="uid://c10ajqa2qandh" path="res://scene/menu/Editor/EditorButton.tres" id="4_0xgyu"]
 [ext_resource type="Script" path="res://scene/menu/Editor/SchematicContainer.gd" id="5_txyhk"]
 [ext_resource type="Script" path="res://scene/menu/Editor/SettingUI.gd" id="6_4411a"]
+[ext_resource type="Script" path="res://scene/menu/Editor/LogPanel.gd" id="7_oeyp2"]
 
 [sub_resource type="Environment" id="Environment_stjhn"]
 background_mode = 3
@@ -39,12 +40,13 @@ border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t28jo"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="Theme" id="Theme_gm537"]
-VBoxContainer/constants/separation = 0
-VBoxContainer/styles/StyleBox = SubResource("StyleBoxFlat_t28jo")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sltfm"]
+bg_color = Color(0, 0, 0, 0.443137)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_color = Color(1, 1, 1, 1)
+border_blend = true
 
 [node name="Editor" type="Node2D"]
 script = ExtResource("1_nvkhc")
@@ -54,7 +56,7 @@ environment = SubResource("Environment_stjhn")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-script = ExtResource("2_gaav4")
+script = ExtResource("2_kwb2o")
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
 layer = 0
@@ -62,6 +64,7 @@ layer = 0
 [node name="ParallaxBackground" type="ParallaxBackground" parent="EditorUI"]
 
 [node name="BackgroundColor" type="ColorRect" parent="EditorUI/ParallaxBackground"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -114,7 +117,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="SettingUI" type="VFlowContainer" parent="EditorUI"]
-offset_right = 1154.0
+offset_right = 1918.0
 offset_bottom = 40.0
 script = ExtResource("6_4411a")
 
@@ -126,7 +129,6 @@ text = "Setting"
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SettingUI"]
 visible = false
 layout_mode = 2
-theme = SubResource("Theme_gm537")
 
 [node name="LiveCode" type="CheckBox" parent="EditorUI/SettingUI/VBoxContainer"]
 layout_mode = 2
@@ -138,6 +140,8 @@ layout_mode = 2
 [node name="Label" type="Label" parent="EditorUI/SettingUI/VFlowContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
+size_flags_vertical = 6
+text = "FPS"
 vertical_alignment = 1
 
 [node name="Label2" type="Label" parent="EditorUI/SettingUI/VFlowContainer"]
@@ -150,5 +154,27 @@ layout_mode = 2
 size_flags_horizontal = 8
 vertical_alignment = 1
 
+[node name="LogPanel" type="PanelContainer" parent="EditorUI"]
+offset_left = 3.0
+offset_top = 901.0
+offset_right = 1921.0
+offset_bottom = 1002.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_sltfm")
+script = ExtResource("7_oeyp2")
+
+[node name="MarginContainer" type="MarginContainer" parent="EditorUI/LogPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/LogPanel/MarginContainer" groups=["LogContainer"]]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[connection signal="resized" from="EditorUI/LiveCodePanel" to="EditorUI/LogPanel" method="_on_live_code_panel_resized"]
+[connection signal="visibility_changed" from="EditorUI/LiveCodePanel" to="EditorUI/LogPanel" method="_on_live_code_panel_visibility_changed"]
 [connection signal="button_down" from="EditorUI/LiveCodePanel/GetCode" to="." method="_on_get_code_button_down"]
+[connection signal="resized" from="EditorUI/SchematicPanel" to="EditorUI/LogPanel" method="_on_schematic_panel_resized"]
+[connection signal="visibility_changed" from="EditorUI/SchematicPanel" to="EditorUI/LogPanel" method="_on_schematic_panel_visibility_changed"]
 [connection signal="text_changed" from="EditorUI/SchematicPanel/VBoxContainer/SearchBox" to="." method="_on_search_box_text_changed"]

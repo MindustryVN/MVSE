@@ -7,10 +7,9 @@ func setup():
 	add_output("output")
 	add_input("input")
 
-	add_component("line4", "BaseLineColor", "row")
 	add_component("line2", "BaseLineColor", "row")
 	add_component("line3", "BaseLineColor", "row")
-	add_component("text5", "CenterLabel", "line4").text = "rect"
+
 	add_component("text1", "CenterLabel", "line2").text = "x"
 	add_component("x", "TextBox", "line2")
 	add_component("text2", "CenterLabel", "line2").text = "y"

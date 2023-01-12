@@ -2,7 +2,7 @@ extends Node2D
 
 # Global constant
 const BASE_HEIGHT : float = 70
-const BASE_WIDTH : float = 450
+const BASE_WIDTH : float = 500
 
 const BASE_MIN_HEIGHT : float = 20
 const BASE_MIN_WIDTH : float = 200
@@ -23,7 +23,7 @@ const ZOOM_FACTOR : float = 1.1
 const CONNECTION_SEGMENT : float = 50
 
 const MAX_LIVE_CODE_SIZE : float = 0.5
-const MIN_LIVE_CODE_SIZE : float = 0
+const MIN_LIVE_CODE_SIZE : float = 0.05
 
 const MAX_WORLD_SIZE : float = 8000
 
@@ -39,6 +39,8 @@ const INSTRUCTION_COLOR = {
 	FLOW_CONTROL = Color("6bb2b2"),
 	UNIT_CONTROL = Color("c7b59d")
 }
+
+const LOCATE_GROUP = ["core", "storage", "generator", "turret", "factory", "repair", "battery", "reactor"]
 
 const COMPONENT_TYPE = {
 	"InstructionBackground" = "res://scene/instruction/Base/InstructionBackground.tscn",

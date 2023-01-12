@@ -6,11 +6,9 @@ func setup():
 	color = Config.INSTRUCTION_COLOR["INPUT_OUTPUT"]
 	add_output("output")
 	add_input("input")
-	add_component("line5", "BaseLineColor", "row")
 	add_component("line2", "BaseLineColor", "row")
 	add_component("line3", "BaseLineColor", "row")
 	add_component("line4", "BaseLineColor", "row")
-	add_component("text7", "CenterLabel", "line5").text = "triangle"
 	add_component("text1", "CenterLabel", "line2").text = "x"
 	add_component("x", "TextBox", "line2")
 	add_component("text2", "CenterLabel", "line2").text = "y"

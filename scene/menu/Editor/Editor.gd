@@ -7,6 +7,7 @@ extends Node2D
 @onready var LIVECODE_SHOW_BUTTON : CheckBox = $EditorUI/SettingUI/VBoxContainer/LiveCode
 @onready var SCHEMATIC_PANEL : PanelContainer = $EditorUI/SchematicPanel
 @onready var LIVECODE_PANEL : PanelContainer = $EditorUI/LiveCodePanel 
+@onready var LOG_PANEL : PanelContainer = $EditorUI/LogPanel
 
 @onready var SCHEMATIC_CONTAINER  = $EditorUI/SchematicPanel/VBoxContainer/PanelContainer
 
@@ -15,25 +16,43 @@ extends Node2D
 var instruction_dic : Dictionary = {}
 var instruction_ins : Array= []
 
+var exception : Array = [
+	StartException.new(),
+	InstructionException.new()
+	]
+
+signal on_instruction_added
+signal on_instruction_deleted
+
 func _process(_delta):
 	POSITION_LABEL.text = "Postion:" + str($Camera2D.global_position)
 	MOUSE_POSITION_LABEL.text =  "Mouse Position:" + str(get_global_mouse_position())
 	FPS_LABEL.text = "  FPS:"  + str(Engine.get_frames_per_second()) 
 	
 func _draw():
-	draw_line(Vector2(10000,0), Vector2(-10000,0), Color.GREEN)
-	draw_line(Vector2(0,10000), Vector2(0,-10000), Color.GREEN)
+	draw_line(Vector2(20000,0), Vector2(-20000,0), Color.GREEN)
+	draw_line(Vector2(0,20000), Vector2(0,-20000), Color.GREEN)
 
 func _ready():
 	Config.on_content_change.connect(update_live_code.bind())
+	Config.on_content_change.connect(check_exception.bind())
+	on_instruction_added.connect(check_exception.bind())
+	on_instruction_deleted.connect(check_exception.bind())
+	
 	get_viewport().size_changed.connect(resize.bind())
 	resize()
 	LIVECODE_SHOW_BUTTON.toggled.connect(show_live_code.bind())
 	
-	show_live_code(false)
+	show_live_code(true)
 	show_schematic(true)
 	
+	for excep in exception:
+		LOG_PANEL.add_child(excep)
 	
+	add_preview_instruction()
+	check_exception()
+	
+func add_preview_instruction():
 	var directory = ["res://scene/instruction/BlockControl",
 	"res://scene/instruction/FlowControl",
 	"res://scene/instruction/InputOutput",
@@ -70,6 +89,8 @@ func _ready():
 		ins.set_disable(true)
 		start.y += (ins.get_size().y + Config.COMPONENT_SPACE_Y) * Config.EDITOR_SCHEMATIC_SCALE
 		
+		
+		
 func resize():
 	var view : Rect2 = get_viewport_rect()
 	SETTING_UI.position = Vector2.ZERO
@@ -81,6 +102,7 @@ func resize():
 	SCHEMATIC_PANEL.position = Vector2(0, SETTING_UI.size.y)
 	SCHEMATIC_PANEL.size.y =  view.size.y - SETTING_UI.size.y
 	
+	LOG_PANEL.on_resize()
 	
 func show_live_code(value : bool):
 	LIVECODE_PANEL.visible = value
@@ -112,6 +134,9 @@ func on_delete(delete_position : Vector2) -> void:
 	var obj = Config.get_node_at_position("Instruction", delete_position)
 	if obj:
 		obj.delete()
+		await get_tree().process_frame
+		await get_tree().process_frame
+		on_instruction_deleted.emit()
 
 func on_zoom(zoom_value : float) -> void:
 	Config.current_camera = get_viewport().get_camera_2d()
@@ -121,9 +146,11 @@ func on_zoom(zoom_value : float) -> void:
 				
 
 func on_drag(drag_relative : Vector2, drag_position : Vector2) -> void:
-	if LIVECODE_PANEL.on_drag():
-		return
-	if SCHEMATIC_PANEL.on_drag():
+	LIVECODE_PANEL.on_drag(LIVECODE_PANEL.get_global_mouse_position())
+	SCHEMATIC_PANEL.on_drag(SCHEMATIC_PANEL.get_global_mouse_position())
+	LOG_PANEL.on_drag(LOG_PANEL.get_global_mouse_position())
+	
+	if Config.is_resizing:
 		return
 	
 	if Config.is_scrolling:
@@ -160,10 +187,15 @@ func on_drag(drag_relative : Vector2, drag_position : Vector2) -> void:
 
 func on_click(click_position : Vector2) -> void:
 	
-	if LIVECODE_PANEL.on_click():
+	LIVECODE_PANEL.on_click(LIVECODE_PANEL.get_global_mouse_position())
+	SCHEMATIC_PANEL.on_click(SCHEMATIC_PANEL.get_global_mouse_position())
+	LOG_PANEL.on_click(LOG_PANEL.get_global_mouse_position())
+	if Config.is_resizing:
 		return
-	if SCHEMATIC_PANEL.on_click():
-		return
+	
+	for excep in exception:
+		if excep.on_click(excep.get_global_mouse_position()):
+			return
 	#If click on nothing, unfocus keyboard
 	if SCHEMATIC_CONTAINER.get_global_rect().has_point(SCHEMATIC_CONTAINER.get_global_mouse_position()):
 		Config.drag_focus = get_schematic(click_position)
@@ -174,7 +206,9 @@ func on_click(click_position : Vector2) -> void:
 			ins.add_to_group("Instruction")
 			ins.add_to_group("Drag")
 			call_deferred("add_child", ins)
+			await ins.on_ready
 			Config.drag_focus = ins
+			on_instruction_added.emit()
 			return
 			
 	if SCHEMATIC_PANEL.get_global_rect().has_point(SCHEMATIC_PANEL.get_global_mouse_position()):
@@ -194,15 +228,17 @@ func on_click(click_position : Vector2) -> void:
 func on_release(release_position : Vector2):
 	LIVECODE_PANEL.on_release()
 	SCHEMATIC_PANEL.on_release()
+	LOG_PANEL.on_release()
 	
-	if Config.drag_focus is InstructionOutput:
-		var target = Config.get_node_at_position("Input", release_position)
+	if is_instance_valid(Config.drag_focus):
+		if Config.drag_focus is InstructionOutput:
+			var target = Config.get_node_at_position("Input", release_position)
 			
-		if target == null:
-			Config.drag_focus.disconnect_instruction()
-			Config.drag_focus.reset()
-		else:
-			Config.drag_focus.connect_instruction(target)
+			if target == null:
+				Config.drag_focus.disconnect_instruction()
+				Config.drag_focus.reset()
+			else:
+				Config.drag_focus.connect_instruction(target)
 	
 	if not Config.drag_focus == null:
 		if Config.drag_focus.has_method("drop"):
@@ -213,33 +249,27 @@ func on_release(release_position : Vector2):
 
 
 func update_live_code() -> void:
-	var start = get_start_instruction()
+	if not LIVECODE_PANEL.visible:
+		return
+	var code = get_code()
+	var text = "L    Instruction\n"
+	for i in range(0, code.size()):
+		text += str(i) + "   " + code[i] + "\n"
+	$EditorUI/LiveCodePanel/Croll/LiveCode.text = text
 
-	if start != null:
-		for i in get_tree().get_nodes_in_group("Instruction"):
-			i.line = -1
-		Config.current_line = -1
-		start.set_line()
-		var text = ""
-		text += "L   Instruction\n"
-		var ins_output = start.get_code()
-		for i in range(0, ins_output.size()):
-			text += str(i) + "   " + ins_output[i] + "\n"
-		$EditorUI/LiveCodePanel/Croll/LiveCode.text = text
 
-func get_code() -> void:
+func get_code() -> Array:
 	var start : FlowStartInstruction = get_start_instruction()
-	
 	if start != null:
 		for i in get_tree().get_nodes_in_group("Instruction"):
 			i.line = -1
 		Config.current_line = -1
 		start.set_line()
-		var text = ""
 		var ins_output = start.get_code()
-		for i in range(0, ins_output.size()):
-			text += ins_output[i] + "\n"
-		DisplayServer.clipboard_set(text)
+		if ins_output.back() == "end":
+			ins_output.pop_back()
+		return ins_output
+	return [""]
 
 func get_start_instruction() -> FlowStartInstruction:
 	var start = get_tree().get_nodes_in_group("Start")
@@ -249,7 +279,11 @@ func get_start_instruction() -> FlowStartInstruction:
 	return null
 
 func _on_get_code_button_down() -> void:
-	get_code()
+	var code = get_code()
+	var text = ""
+	for i in range(0, code.size()):
+		text += code[i] + "\n"
+		DisplayServer.clipboard_set(text)
 
 func get_schematic(click_position : Vector2) -> Instruction:
 	if not SCHEMATIC_PANEL.get_global_rect().has_point(SCHEMATIC_PANEL.get_global_mouse_position()):
@@ -263,9 +297,11 @@ func _on_search_box_text_changed(new_text: String) -> void:
 	var result : Array = []
 	var instruction : Array = get_tree().get_nodes_in_group("SchematicPreview")
 	for i in instruction:
-		i.hide()
 		i.global_position.x = -1000
+		i.hide()
 		if i.instruction_name.to_lower().begins_with(new_text):
+			if result.has(i):
+				continue
 			result.append(i)
 
 	if result.size() <= 10:
@@ -277,9 +313,15 @@ func _on_search_box_text_changed(new_text: String) -> void:
 			result.append(i)
 	
 	instruction_ins = result
-	var start = Vector2(Config.IO_CIRCLE_RADIUS * 2, 0)
+	if result.size() == 0:
+		return
+	var start = Vector2(Config.IO_CIRCLE_RADIUS * 2, SCHEMATIC_CONTAINER.global_position.y)
 	for i in instruction_ins:
 		i.global_position = start
 		i.show()
 		start.y += (i.get_size().y + Config.COMPONENT_SPACE_Y) * Config.EDITOR_SCHEMATIC_SCALE 
-	
+
+func check_exception() -> void:
+	for excep in exception:
+		excep.check()
+		

@@ -1,4 +1,4 @@
-class_name BindInstruction
+class_name UnitBindInstruction
 extends Instruction
 
 

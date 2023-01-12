@@ -14,6 +14,7 @@ var disabled : bool = false
 
 var line = -1
 
+
 signal on_drag
 signal on_content_change
 signal on_ready
@@ -28,11 +29,13 @@ func _ready() -> void:
 	add_component("row", "BaseRow", null)
 	add_component("line1", "BaseLine", "row")
 	add_component("title", "ColorLabel", "line1").text = instruction_name.capitalize()
+	add_component("line", "ColorLabel", "line1")
 	add_child(component["InstructionBackground"])
 	setup()
 	update(color)
 
 func set_disable(value : bool) -> void:
+	disabled = value
 	if value == true:
 		remove_from_group("Start")
 	for child in get_children():
@@ -44,6 +47,10 @@ func set_line() -> void:
 		return
 	Config.current_line += 1
 	self.line = Config.current_line
+	#Display line
+	if component.has("line"):
+		component["line"].text = str(Config.current_line)
+		
 	for o in output.values():
 		o.set_line()
 
@@ -81,7 +88,7 @@ func update(_color : Color):
 func delete() -> void:
 	on_content_change.emit()
 	on_delete.emit()
-	call_deferred("queue_free")
+	queue_free()
 		
 func add_output(output_name : String):
 	var ins = load("res://scene/instruction/base/InstructionOutput.tscn").instantiate()
@@ -95,6 +102,8 @@ func add_input(input_name : String):
 
 
 func drag(pos : Vector2):
+	if disabled:
+		return
 	global_position = pos
 	top_level = true
 	on_drag.emit()
