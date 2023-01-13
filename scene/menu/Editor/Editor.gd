@@ -15,6 +15,8 @@ extends Node2D
 
 @onready var SETTING_UI = $EditorUI/SettingUI
 
+@onready var INSTRUCTION_CONTAINER = $VisibleOnScreenEnabler2D
+
 var instruction_dic : Dictionary = {}
 var instruction_ins : Array= []
 var instruction_selecting : Array = []
@@ -42,6 +44,7 @@ func _draw():
 func _ready():
 	Config.on_content_change.connect(update_live_code.bind())
 	Config.on_content_change.connect(check_exception.bind())
+	Config.on_content_change.connect(reset_line.bind(get_start_instruction()))
 	on_instruction_added.connect(check_exception.bind())
 	on_instruction_deleted.connect(check_exception.bind())
 	
@@ -87,7 +90,6 @@ func add_preview_instruction():
 		var ins : Instruction = load(instruction_dic[ins_name]).new(ins_name)
 		instruction_ins.append(ins)
 		ins.global_position = start
-		ins.on_content_change.connect(update_live_code.bind())
 		ins.add_to_group("SchematicPreview")
 		ins.name = ins_name
 		ins.instruction_name = ins_name
@@ -104,7 +106,7 @@ func resize():
 	SETTING_UI.position = Vector2.ZERO
 	SETTING_UI.size = Vector2(view.size.x, Config.TOOL_BAR_HEIGHT)
 	
-	LIVECODE_PANEL.position = Vector2(view.size.x - LIVECODE_PANEL.size.x, 0)
+	LIVECODE_PANEL.position = Vector2(view.size.x - LIVECODE_PANEL.size.x, SETTING_UI.size.y)
 	LIVECODE_PANEL.size.y = view.size.y
 	
 	SCHEMATIC_PANEL.position = Vector2(0, SETTING_UI.size.y)
@@ -151,8 +153,7 @@ func on_alternative_click(click_position : Vector2) -> void:
 	var obj = Config.get_node_at_position("Instruction", click_position)
 	if obj:
 		obj.delete()
-		await get_tree().process_frame
-		await get_tree().process_frame
+		await obj.tree_exited
 		on_instruction_deleted.emit()
 	else:
 		Config.is_selecting = true
@@ -298,6 +299,8 @@ func paste_instruction(paste_position : Vector2):
 	
 	for i in instruction_selecting:
 		ins = await add_instruction(i.instruction_name)
+		if ins == null:
+			return
 		result[i.iid] = ins
 		ins.global_position = paste_position - start_position + i.global_position
 
@@ -315,11 +318,10 @@ func paste_instruction(paste_position : Vector2):
 
 
 func add_instruction(instruction_name : String) -> Instruction:
-	if get_tree().get_nodes_in_group("Instruction").size() >= 1000:
+	if get_tree().get_nodes_in_group("Instruction").size() > 1000:
 		return
 	var ins : Instruction = load(instruction_dic[instruction_name]).new(instruction_name)
-	call_deferred("add_child", ins)
-	ins.on_content_change.connect(update_live_code.bind())
+	INSTRUCTION_CONTAINER.call_deferred("add_child", ins)
 	ins.add_to_group("Instruction")
 	ins.add_to_group("Drag")
 	ins.iid = Config.getIID()
@@ -336,14 +338,19 @@ func update_live_code() -> void:
 		text += str(i) + "   " + code[i] + "\n"
 	$EditorUI/LiveCodePanel/Croll/LiveCode.text = text
 
+func set_line(start : FlowStartInstruction) -> void:
+	Config.current_line = Config.START_LINE
+	start.set_line()
+
+func reset_line(start : FlowStartInstruction) -> void:
+	Config.current_line = Config.START_LINE
+	if is_instance_valid(start):
+		set_line(start)
 
 func get_code() -> Array:
 	var start : FlowStartInstruction = get_start_instruction()
-	if start != null:
-		for i in get_tree().get_nodes_in_group("Instruction"):
-			i.line = -1
-		Config.current_line = -1
-		start.set_line()
+	if is_instance_valid(start):
+		reset_line(start)
 		var ins_output = start.get_code()
 		if ins_output.back() == "end":
 			ins_output.pop_back()

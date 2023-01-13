@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://bqc000t67w6tv"]
+[gd_scene load_steps=18 format=3 uid="uid://bqc000t67w6tv"]
 
 [ext_resource type="Script" path="res://scene/menu/Editor/Editor.gd" id="1_nvkhc"]
 [ext_resource type="Script" path="res://scene/menu/Editor/CameraController.gd" id="2_kwb2o"]
 [ext_resource type="Script" path="res://scene/menu/Editor/LiveCodeContainer.gd" id="3_4fm5q"]
-[ext_resource type="Theme" uid="uid://c10ajqa2qandh" path="res://scene/menu/Editor/EditorButton.tres" id="4_0xgyu"]
 [ext_resource type="Script" path="res://scene/menu/Editor/SchematicContainer.gd" id="5_txyhk"]
 [ext_resource type="Script" path="res://scene/menu/Editor/SettingUI.gd" id="6_4411a"]
 [ext_resource type="Script" path="res://scene/menu/Editor/LogPanel.gd" id="7_oeyp2"]
@@ -25,6 +24,30 @@ border_width_top = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08n7e"]
+bg_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfeyn"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s43b4"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wefy6"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_2gkx4"]
+Button/styles/focus = SubResource("StyleBoxFlat_08n7e")
+Button/styles/hover = SubResource("StyleBoxFlat_dfeyn")
+Button/styles/normal = SubResource("StyleBoxFlat_s43b4")
+Button/styles/pressed = SubResource("StyleBoxFlat_wefy6")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ikp72"]
 bg_color = Color(0, 0, 0, 0.580392)
@@ -97,7 +120,7 @@ layout_mode = 2
 [node name="GetCode" type="Button" parent="EditorUI/LiveCodePanel"]
 layout_mode = 2
 size_flags_vertical = 8
-theme = ExtResource("4_0xgyu")
+theme = SubResource("Theme_2gkx4")
 text = "Copy"
 
 [node name="SchematicPanel" type="PanelContainer" parent="EditorUI"]
@@ -130,7 +153,6 @@ script = ExtResource("6_4411a")
 
 [node name="Button" type="Button" parent="EditorUI/SettingUI"]
 layout_mode = 2
-theme = ExtResource("4_0xgyu")
 text = "Setting"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SettingUI"]
@@ -183,11 +205,14 @@ size_flags_horizontal = 0
 position = Vector2(20000, 0)
 
 [node name="Panel" type="Panel" parent="SelectRectangle"]
-z_index = 100
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_5ifvr")
 
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+enable_node_path = NodePath(".")
+
+[connection signal="item_rect_changed" from="EditorUI/LiveCodePanel" to="EditorUI/LogPanel" method="_on_live_code_panel_item_rect_changed"]
 [connection signal="resized" from="EditorUI/LiveCodePanel" to="EditorUI/LogPanel" method="_on_live_code_panel_resized"]
 [connection signal="visibility_changed" from="EditorUI/LiveCodePanel" to="EditorUI/LogPanel" method="_on_live_code_panel_visibility_changed"]
 [connection signal="button_down" from="EditorUI/LiveCodePanel/GetCode" to="." method="_on_get_code_button_down"]

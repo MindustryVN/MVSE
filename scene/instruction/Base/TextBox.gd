@@ -1,6 +1,8 @@
 class_name TextBox
 extends Control
 
+var update_before : bool = true
+
 func _ready():
 	focus_entered.connect(_on_line_edit_focus_entered.bind())
 	focus_exited.connect(_on_line_edit_focus_exited.bind())
@@ -8,7 +10,14 @@ func _ready():
 func is_instruction() -> bool:
 	return true
 
-func _update(color : Color):
+func is_update_before() -> bool:
+	return update_before
+
+func set_update_before(value : bool) -> TextBox:
+	update_before = value
+	return self
+
+func update(color : Color):
 	layout_mode = 0
 	var style = StyleBoxFlat.new()
 	style.set_bg_color(Color.BLACK)

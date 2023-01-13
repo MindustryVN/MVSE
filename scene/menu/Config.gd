@@ -1,36 +1,9 @@
 extends Node2D
 
 # Global constant
-const BASE_HEIGHT : float = 70
-const BASE_WIDTH : float = 500
 
-const BASE_MIN_HEIGHT : float = 20
-const BASE_MIN_WIDTH : float = 200
+const START_LINE = -1
 
-const TEXT_BOX_HEIGHT : float = 40
-const TEXT_BOX_WIDTH : float = 100
-
-const COMPONENT_SPACE_X : float = 4
-const COMPONENT_SPACE_Y : float = 2
-
-const IO_CIRCLE_RADIUS : float = 15
-const IO_CIRCLE_COLOR : Color = Color.WHITE
-
-const MAX_ZOOM : float = 5
-const MIN_ZOOM : float = 1
-const ZOOM_FACTOR : float = 1.1
-
-const CONNECTION_SEGMENT : float = 50
-
-const MAX_LIVE_CODE_SIZE : float = 0.5
-const MIN_LIVE_CODE_SIZE : float = 0.05
-
-const MAX_WORLD_SIZE : float = 8000
-
-const TOOL_BAR_HEIGHT : float = 20
-
-const EDITOR_FONT_SIZE : int = 12
-const EDITOR_SCHEMATIC_SCALE = 0.75
 
 const INSTRUCTION_COLOR = {
 	OPERATIONS = Color("877bad"),
@@ -109,6 +82,44 @@ var mutex = Mutex.new()
 
 var current_line = -1
 var iid : int = 0
+
+#Config
+var UI_SCALE = 1.0
+
+var BASE_HEIGHT : float = 70 * UI_SCALE
+var BASE_WIDTH : float = 500 * UI_SCALE
+
+var BASE_MIN_HEIGHT : float = 20 * UI_SCALE
+var BASE_MIN_WIDTH : float = 200 * UI_SCALE
+
+var TEXT_BOX_HEIGHT : float = 40 * UI_SCALE
+var TEXT_BOX_WIDTH : float = 100 * UI_SCALE
+
+var COMPONENT_SPACE_X : float = 4 * UI_SCALE
+var COMPONENT_SPACE_Y : float = 4 * UI_SCALE
+
+var IO_CIRCLE_RADIUS : float = 15 * UI_SCALE
+var IO_CIRCLE_COLOR : Color = Color.WHITE
+
+var MAX_ZOOM : float = 5
+var MIN_ZOOM : float = 1 
+
+var ZOOM_FACTOR : float = 1.1
+var CONNECTION_SEGMENT : float = 50
+
+var MAX_LIVE_CODE_SIZE : float = 0.5
+var MIN_LIVE_CODE_SIZE : float = 0.05
+
+var MAX_WORLD_SIZE : float = 8000
+
+var TOOL_BAR_HEIGHT : float = 20 * UI_SCALE
+
+var EDITOR_FONT_SIZE : int = 12 * UI_SCALE
+var EDITOR_SCHEMATIC_SCALE = 0.75 * UI_SCALE
+
+var PANEL_BORDER_SIZE : int = 5 * UI_SCALE
+var PANEL_BORDER_COLOR : Color = Color.MEDIUM_PURPLE
+var PANEL_BACKGROUND_COLOR : Color = Color(0,0,0,0)
 
 signal on_content_change
 

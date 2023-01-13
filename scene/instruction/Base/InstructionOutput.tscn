@@ -11,6 +11,8 @@ script = ExtResource("1_wy8q4")
 [node name="Panel" type="Panel" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Line2D" type="Line2D" parent="."]
 top_level = true

@@ -1,10 +1,21 @@
 class_name InstructionBackground
 extends Panel
 
+
+var update_before : bool = true
+
+func is_update_before() -> bool:
+	return update_before
+
+func set_update_before(value : bool) -> InstructionBackground:
+	update_before = value
+	return self
+
 func is_instruction() -> bool:
 	return true
+	
 
-func _update(_color : Color) -> void:
+func update(_color : Color) -> void:
 	layout_mode = 0
 	var style : StyleBoxFlat = StyleBoxFlat.new()
 	style.set_bg_color(_color)
@@ -17,8 +28,8 @@ func _update(_color : Color) -> void:
 	var y = Config.COMPONENT_SPACE_Y
 	
 	for i in range(0, count):
-		if Config.is_instruction_component(children[i]):
-			children[i]._update(_color)
+		if Config.is_instruction_component(children[i]) and children[i].is_update_before():
+			children[i].update(_color)
 	
 	for i in range(0, count):
 		children[i].position = Vector2(Config.COMPONENT_SPACE_X, y )
@@ -27,6 +38,11 @@ func _update(_color : Color) -> void:
 			y += (children[i].size.y) 
 		
 	size = Vector2(max(x + Config.COMPONENT_SPACE_X, Config.BASE_WIDTH),max(y + Config.COMPONENT_SPACE_Y, Config.BASE_MIN_HEIGHT))
+	
+	for i in range(0, count):
+		if Config.is_instruction_component(children[i]) and not children[i].is_update_before():
+			children[i].update(_color)
+			
 	set_default_io(get_parent().input, get_parent().output)
 
 	

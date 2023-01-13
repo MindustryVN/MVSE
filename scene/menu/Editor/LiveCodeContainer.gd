@@ -3,11 +3,18 @@ extends PanelContainer
 var is_resizing : bool = false
 
 func _ready() -> void:
+	var style = StyleBoxFlat.new()
+	style.set_border_width_all(2)
+	style.border_width_left = Config.PANEL_BORDER_SIZE
+	style.border_blend = true
+	style.border_color = Config.PANEL_BORDER_COLOR
+	style.bg_color = Config.PANEL_BACKGROUND_COLOR
+	add_theme_stylebox_override("panel",style)
 	size.x = get_viewport_rect().size.x/5
-
+	
 func on_click(click_position : Vector2) -> bool:
 	# Resize live code window
-	if abs(click_position.x - global_position.x) <= 4:
+	if abs(click_position.x - global_position.x) <= Config.PANEL_BORDER_SIZE:
 		Config.is_resizing = true
 		is_resizing = true
 		return true

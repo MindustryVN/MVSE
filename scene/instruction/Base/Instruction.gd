@@ -16,7 +16,6 @@ var line = -1
 var iid = -1
 
 signal on_drag
-signal on_content_change
 signal on_ready
 signal on_delete
 
@@ -29,7 +28,7 @@ func _ready() -> void:
 	add_component("row", "BaseRow", null)
 	add_component("line1", "BaseLine", "row")
 	add_component("title", "ColorLabel", "line1").text = instruction_name.capitalize()
-	add_component("line", "ColorLabel", "line1")
+	add_component("line", "ColorLabel", "line1").set_update_before(true).set_horizontal_alignment_value(HORIZONTAL_ALIGNMENT_RIGHT)
 	add_child(component["InstructionBackground"])
 	setup()
 	update(color)
@@ -44,14 +43,14 @@ func set_disable(value : bool) -> void:
 			child.set_disable(value) 
 
 func set_line() -> void:
-	if line != -1:
-		return
-	Config.current_line += 1
-	self.line = Config.current_line
 	#Display line
-	if component.has("line"):
-		component["line"].text = str(Config.current_line)
+	if not self is FlowStartInstruction:
+		if component.has("line"):
+			component["line"].text = str(Config.current_line)
 		
+	Config.current_line += 1
+	line = Config.current_line
+
 	for o in output.values():
 		o.set_line()
 
@@ -69,7 +68,6 @@ func get_code() -> Array:
 func setup() -> void:
 	print(instruction_name + " setup not overrided")
 	
-
 func get_content() -> Array:
 	return [instruction_name + " get content not overrided"]
 
@@ -82,14 +80,14 @@ func update(_color : Color):
 	
 	for i in range(0, count):
 		if Config.is_instruction_component(children[i]):
-			children[i]._update(_color)
+			children[i].update(_color)
 
 	
 func delete() -> void:
-	on_content_change.emit()
+	Config.on_content_change.emit()
 	on_delete.emit()
 	queue_free()
-		
+
 func add_output(output_name : String):
 	var ins = load("res://scene/instruction/base/InstructionOutput.tscn").instantiate()
 	ins.set_name( output_name) 

@@ -3,6 +3,14 @@ extends Node2D
 
 var input_name : String
 
+var update_before : bool = true
+
+func is_update_before() -> bool:
+	return update_before
+
+func set_update_before(value : bool) -> void:
+	update_before = value
+
 
 func _ready():
 	var style = StyleBoxFlat.new()

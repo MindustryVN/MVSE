@@ -28,6 +28,9 @@ func _ready() -> void:
 	$Label.add_theme_font_size_override("font_size",12)
 	
 	$Line2D.width = Config.IO_CIRCLE_RADIUS / 3
+	$Line2D.gradient = Gradient.new()
+	$Line2D.gradient.set_color(0, Color.PURPLE)
+	$Line2D.gradient.set_color(1, Color.WHITE)
 	
 	var start = get_start_position() 
 	var end = get_start_position()
@@ -103,22 +106,24 @@ func connect_instruction(obj : InstructionInput) -> void:
 	$Line2D.gradient = Gradient.new()
 	$Line2D.gradient.set_color(0, get_parent().color)
 	$Line2D.gradient.set_color(1, target.get_parent().color)
-	if target.get_parent().on_drag.is_connected(drop.bind()):
-		return
+	if not target.get_parent().on_drag.is_connected(drop.bind()):
+		target.get_parent().on_drag.connect(drop.bind())
+		
 	
-	if target.get_parent().on_delete.is_connected(reset.bind()):
-		return
+	if not target.get_parent().on_delete.is_connected(reset.bind()):
+		target.get_parent().on_delete.connect(reset.bind())
+		
 	
-	update_line(get_start_position(), get_end_position())
-	target.get_parent().on_drag.connect(drop.bind())
-	target.get_parent().on_delete.connect(reset.bind())
-	get_parent().on_content_change.emit()
+	drop()
+	Config.on_content_change.emit()
 	
 func disconnect_instruction() -> void:
-	if target != null:
-		target.get_parent().on_drag.disconnect(drop.bind())
+	if is_instance_valid(target):
+		if target.get_parent().on_drag.is_connected(drop.bind()):
+			target.get_parent().on_drag.disconnect(drop.bind())
 		target = null
-		get_parent().on_content_change.emit()
+		Config.on_content_change.emit()
+	
 
 func get_code() -> Array:
 	if not is_instance_valid(target):

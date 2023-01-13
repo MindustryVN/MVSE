@@ -1,13 +1,25 @@
 class_name SelectBox
 extends MenuButton
 
+
+
+var update_before : bool = true
+
+func is_update_before() -> bool:
+	return update_before
+
+func set_update_before(value : bool) -> SelectBox:
+	update_before = value
+	return self
+
+
 func _ready():
 	get_popup().id_pressed.connect(on_press.bind())
 	get_popup().close_requested.connect(on_close.bind())
 	get_popup().add_theme_font_size_override("normal", Config.EDITOR_FONT_SIZE)
 	pressed.connect(on_popup.bind())
 	
-func _update(color : Color):
+func update(color : Color):
 	layout_mode = 0
 	var style = StyleBoxFlat.new()
 	style.set_bg_color(Color.BLACK)

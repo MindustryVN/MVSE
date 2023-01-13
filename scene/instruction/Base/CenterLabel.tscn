@@ -3,4 +3,6 @@
 [ext_resource type="Script" path="res://scene/instruction/Base/CenterLabel.gd" id="1_abwpu"]
 
 [node name="CenterLabel" type="Label"]
+size_flags_horizontal = 3
+size_flags_vertical = 6
 script = ExtResource("1_abwpu")
