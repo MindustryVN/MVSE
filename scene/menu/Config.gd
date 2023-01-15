@@ -77,6 +77,9 @@ var is_scrolling : bool = false
 var is_selecting : bool = false
 var select_start : Vector2
 
+var start_select : bool = false
+var start_paste : bool = false
+var is_zooming : bool = false
 var zoom : float = 1
 var mutex = Mutex.new()
 
@@ -84,7 +87,7 @@ var current_line = -1
 var iid : int = 0
 
 #Config
-var UI_SCALE = 1.0
+var UI_SCALE = 1
 
 var BASE_HEIGHT : float = 70 * UI_SCALE
 var BASE_WIDTH : float = 500 * UI_SCALE
@@ -102,7 +105,7 @@ var IO_CIRCLE_RADIUS : float = 15 * UI_SCALE
 var IO_CIRCLE_COLOR : Color = Color.WHITE
 
 var MAX_ZOOM : float = 5
-var MIN_ZOOM : float = 1 
+var MIN_ZOOM : float = 0.5 
 
 var ZOOM_FACTOR : float = 1.1
 var CONNECTION_SEGMENT : float = 50
@@ -117,9 +120,15 @@ var TOOL_BAR_HEIGHT : float = 20 * UI_SCALE
 var EDITOR_FONT_SIZE : int = 12 * UI_SCALE
 var EDITOR_SCHEMATIC_SCALE = 0.75 * UI_SCALE
 
-var PANEL_BORDER_SIZE : int = 5 * UI_SCALE
-var PANEL_BORDER_COLOR : Color = Color.MEDIUM_PURPLE
-var PANEL_BACKGROUND_COLOR : Color = Color(0,0,0,0)
+var PANEL_BORDER_SIZE : int = 2 * UI_SCALE
+var PANEL_BORDER_WIDTH : int = 10 * UI_SCALE
+var PANEL_BORDER_COLOR : Color = Color.WHITE
+var PANEL_BACKGROUND_COLOR : Color = Color8(10,10,10)
+
+var INSTRUCTION_SNAP : int = 20 
+
+var START_AUTO_PAN_DISTANCE : int = 20
+var AUTO_PAN_SPEED : int = 60
 
 signal on_content_change
 

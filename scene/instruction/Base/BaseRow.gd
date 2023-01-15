@@ -1,8 +1,6 @@
 class_name BaseRow
 extends Control
 
-
-
 var update_before : bool = true
 
 func is_update_before() -> bool:

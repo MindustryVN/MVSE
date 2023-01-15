@@ -1,27 +1,23 @@
 extends Node2D
 
-@onready var POSITION_LABEL : Label = $EditorUI/SettingUI/VFlowContainer/Label
-@onready var MOUSE_POSITION_LABEL : Label = $EditorUI/SettingUI/VFlowContainer/Label2
-@onready var FPS_LABEL : Label = $EditorUI/SettingUI/VFlowContainer/Label3
+@onready var FPS_LABEL : Label = $EditorUI/TaskBar/HBoxContainer/Label
 
-@onready var LIVECODE_SHOW_BUTTON : CheckBox = $EditorUI/SettingUI/VBoxContainer/LiveCode
 @onready var SCHEMATIC_PANEL : PanelContainer = $EditorUI/SchematicPanel
 @onready var LIVECODE_PANEL : PanelContainer = $EditorUI/LiveCodePanel 
 @onready var LOG_PANEL : PanelContainer = $EditorUI/LogPanel
+@onready var TASK_BAR : MenuBar = $EditorUI/TaskBar
 
 @onready var SCHEMATIC_CONTAINER  = $EditorUI/SchematicPanel/VBoxContainer/PanelContainer
 @onready var SELECT_RECTANGLE  = $SelectRectangle
 @onready var SELECT_RECTANGLE_SIZE = $SelectRectangle/Panel
-
-@onready var SETTING_UI = $EditorUI/SettingUI
-
-@onready var INSTRUCTION_CONTAINER = $VisibleOnScreenEnabler2D
 
 var instruction_dic : Dictionary = {}
 var instruction_ins : Array= []
 var instruction_selecting : Array = []
 
 var select_rectangle_size : Vector2= Vector2.ZERO
+var touch_position = {}
+var last_dist = 0
 
 var exception : Array = [
 	StartException.new(),
@@ -32,11 +28,6 @@ var exception : Array = [
 signal on_instruction_added
 signal on_instruction_deleted
 
-func _process(_delta):
-	POSITION_LABEL.text = "Postion:" + str($Camera2D.global_position)
-	MOUSE_POSITION_LABEL.text =  "Mouse Position:" + str(get_global_mouse_position())
-	FPS_LABEL.text = "  FPS:"  + str(Engine.get_frames_per_second()) 
-	
 func _draw():
 	draw_line(Vector2(20000,0), Vector2(-20000,0), Color.GREEN)
 	draw_line(Vector2(0,20000), Vector2(0,-20000), Color.GREEN)
@@ -49,8 +40,7 @@ func _ready():
 	on_instruction_deleted.connect(check_exception.bind())
 	
 	get_viewport().size_changed.connect(resize.bind())
-	resize()
-	LIVECODE_SHOW_BUTTON.toggled.connect(show_live_code.bind())
+	call_deferred("resize")
 	
 	show_live_code(true)
 	show_schematic(true)
@@ -60,67 +50,31 @@ func _ready():
 	
 	add_preview_instruction()
 	check_exception()
-	
-func add_preview_instruction():
-	var directory = ["res://scene/instruction/BlockControl",
-	"res://scene/instruction/FlowControl",
-	"res://scene/instruction/InputOutput",
-	"res://scene/instruction/Operation",
-	"res://scene/instruction/UnitControl"]
-	
 
-	for path in directory:
-		var dir =  DirAccess.open(path)
-		dir.list_dir_begin()
-
-		while true:
-			var file = dir.get_next()
-			if file == "":
-				break
-			elif not file.begins_with(".") and file.ends_with(".gd"):
-				instruction_dic[file.replace(".gd", "").replace("Instruction", "")] = path + "/" + file
-				
-		dir.list_dir_end()
+func _process(delta: float) -> void:
+	FPS_LABEL.text = "  FPS:"  + str(Engine.get_frames_per_second()) 
 	
-	
-	var start = Vector2(Config.IO_CIRCLE_RADIUS * 2, 0)
-	
-	
-	for ins_name in instruction_dic.keys():
-		var ins : Instruction = load(instruction_dic[ins_name]).new(ins_name)
-		instruction_ins.append(ins)
-		ins.global_position = start
-		ins.add_to_group("SchematicPreview")
-		ins.name = ins_name
-		ins.instruction_name = ins_name
-		ins.scale = Vector2(Config.EDITOR_SCHEMATIC_SCALE,Config.EDITOR_SCHEMATIC_SCALE)
-		SCHEMATIC_CONTAINER.call_deferred("add_child", ins)
-		await ins.on_ready
-		ins.set_disable(true)
-		start.y += (ins.get_size().y + Config.COMPONENT_SPACE_Y) * Config.EDITOR_SCHEMATIC_SCALE
+	if Config.drag_focus != null or Config.is_selecting:
+		var local_mouse_pos : Vector2 = get_viewport().get_mouse_position() 
+		var viewport_size : Vector2 = get_viewport_rect().size
+		if local_mouse_pos.x < Config.START_AUTO_PAN_DISTANCE:
+			Config.current_camera.position.x -= Config.AUTO_PAN_SPEED * Config.zoom * delta
+		elif local_mouse_pos.x > viewport_size.x - Config.START_AUTO_PAN_DISTANCE:
+			Config.current_camera.position.x += Config.AUTO_PAN_SPEED * Config.zoom * delta
 		
-		
-		
-func resize():
-	var view : Rect2 = get_viewport_rect()
-	SETTING_UI.position = Vector2.ZERO
-	SETTING_UI.size = Vector2(view.size.x, Config.TOOL_BAR_HEIGHT)
-	
-	LIVECODE_PANEL.position = Vector2(view.size.x - LIVECODE_PANEL.size.x, SETTING_UI.size.y)
-	LIVECODE_PANEL.size.y = view.size.y
-	
-	SCHEMATIC_PANEL.position = Vector2(0, SETTING_UI.size.y)
-	SCHEMATIC_PANEL.size.y =  view.size.y - SETTING_UI.size.y
-	
-	LOG_PANEL.on_resize()
-	
-func show_live_code(value : bool):
-	LIVECODE_PANEL.visible = value
-	
-func show_schematic(value : bool):
-	SCHEMATIC_PANEL.visible = value
+		if local_mouse_pos.y < Config.START_AUTO_PAN_DISTANCE:
+			Config.current_camera.position.y -= Config.AUTO_PAN_SPEED * Config.zoom * delta
+		elif local_mouse_pos.y > viewport_size.y - Config.START_AUTO_PAN_DISTANCE:
+			Config.current_camera.position.y += Config.AUTO_PAN_SPEED * Config.zoom * delta
 	
 func _input(event):
+	if OS.get_name() == "Android":
+		touch_input(event)
+		mouse_input(event)
+	else:
+		mouse_input(event)
+
+func mouse_input(event) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if event.button_index == MOUSE_BUTTON_LEFT:
@@ -145,9 +99,18 @@ func _input(event):
 			paste_instruction(get_global_mouse_position())
 			
 		if event.is_pressed() and event.keycode == KEY_DELETE:
-			for i in instruction_selecting:
-				i.delete()
+			delete_instruction()
 
+func touch_input(event) -> void:
+	if event is InputEventScreenDrag:
+		touch_position[event.index] = event.position
+		if event.index >= 1:
+			var dist = (touch_position[0] - touch_position[1]).length()
+			if last_dist == 0:
+				last_dist = dist
+			on_zoom(Config.zoom - (dist - last_dist) / 1000)
+			Config.is_zooming = true
+		
 func on_alternative_click(click_position : Vector2) -> void:
 	# Delete instruction
 	var obj = Config.get_node_at_position("Instruction", click_position)
@@ -169,27 +132,22 @@ func on_zoom(zoom_value : float) -> void:
 				
 
 func on_drag(drag_relative : Vector2, drag_position : Vector2) -> void:
-	LIVECODE_PANEL.on_drag(LIVECODE_PANEL.get_global_mouse_position())
-	SCHEMATIC_PANEL.on_drag(SCHEMATIC_PANEL.get_global_mouse_position())
-	LOG_PANEL.on_drag(LOG_PANEL.get_global_mouse_position())
+	LIVECODE_PANEL.on_drag()
+	SCHEMATIC_PANEL.on_drag()
+	LOG_PANEL.on_drag()
 	
 	if Config.is_resizing:
 		return
-	if Config.is_selecting:
-		select_rectangle_size = abs(Config.select_start - drag_position)
-		if Config.select_start.x > drag_position.x:
-			SELECT_RECTANGLE.global_position.x = drag_position.x
-		else:
-			SELECT_RECTANGLE.global_position.x = Config.select_start.x
-		
-		if Config.select_start.y > drag_position.y:
-			SELECT_RECTANGLE.global_position.y = drag_position.y
-		else:
-			SELECT_RECTANGLE.global_position.y = Config.select_start.y
-		SELECT_RECTANGLE_SIZE.size = select_rectangle_size
-			
+	
+	if Config.is_zooming:
 		return
 	
+	if Config.is_selecting:
+		var select_rectangle_position = Vector2(min(Config.select_start.x, drag_position.x),min(Config.select_start.y, drag_position.y) )
+		SELECT_RECTANGLE.global_position = Vector2(select_rectangle_position)
+		SELECT_RECTANGLE_SIZE.size = Vector2(abs(Config.select_start.x - drag_position.x),abs(Config.select_start.y - drag_position.y))
+		return
+		
 	if Config.is_scrolling:
 		var front = instruction_ins.front()
 		var back = instruction_ins.back()
@@ -224,9 +182,22 @@ func on_drag(drag_relative : Vector2, drag_position : Vector2) -> void:
 
 func on_click(click_position : Vector2) -> void:
 	
-	LIVECODE_PANEL.on_click(LIVECODE_PANEL.get_global_mouse_position())
-	SCHEMATIC_PANEL.on_click(SCHEMATIC_PANEL.get_global_mouse_position())
-	LOG_PANEL.on_click(LOG_PANEL.get_global_mouse_position())
+	LIVECODE_PANEL.on_click()
+	SCHEMATIC_PANEL.on_click()
+	LOG_PANEL.on_click()
+	
+	if Config.start_select:
+		Config.is_selecting = true
+		Config.select_start = click_position
+		SELECT_RECTANGLE.global_position = get_global_mouse_position()
+		SELECT_RECTANGLE_SIZE.size = Vector2.ZERO
+		Config.start_select = false
+		return
+		
+	if Config.start_paste:
+		paste_instruction(get_global_mouse_position())
+		Config.start_paste = false
+		
 	if Config.is_resizing:
 		return
 	
@@ -283,6 +254,8 @@ func on_release(release_position : Vector2):
 	Config.is_panning = false
 	Config.is_scrolling = false
 	Config.drag_focus = null
+	Config.is_zooming = false
+	last_dist = 0
 	
 func select_instruction(start : Vector2, end : Vector2):
 	instruction_selecting = Config.get_node_in_rect("Instruction", start, end)
@@ -311,20 +284,89 @@ func paste_instruction(paste_position : Vector2):
 			target_iid = i.output[key].get_target_iid()
 			if target_iid == -1:
 				continue
+			if not result.has(target_iid):
+				continue
 			target_ins = result[target_iid]
 			if result.has(target_iid):
 				var target_input : String = i.output[key].get_target_name()
 				current_ins.output[key].connect_instruction(target_ins.input[target_input])
 
+func delete_instruction():
+	for i in instruction_selecting:
+		i.delete()
+		await i.tree_exited
+	on_instruction_deleted.emit()
 
+func add_preview_instruction():
+	var directory = ["res://scene/instruction/BlockControl",
+	"res://scene/instruction/FlowControl",
+	"res://scene/instruction/InputOutput",
+	"res://scene/instruction/Operation",
+	"res://scene/instruction/UnitControl"]
+	
+
+	for path in directory:
+		var dir =  DirAccess.open(path)
+		dir.list_dir_begin()
+
+		while true:
+			var file = dir.get_next()
+			if file == "":
+				break
+			elif not file.begins_with(".") and file.ends_with(".gd"):
+				instruction_dic[file.replace(".gd", "").replace("Instruction", "")] = path + "/" + file
+				
+		dir.list_dir_end()
+	
+	
+	var start = Vector2(Config.IO_CIRCLE_RADIUS * 2, 0)
+	
+	
+	for ins_name in instruction_dic.keys():
+		var ins : Instruction = load(instruction_dic[ins_name]).new(ins_name)
+		instruction_ins.append(ins)
+		ins.global_position = start
+		ins.add_to_group("SchematicPreview")
+		ins.name = ins_name
+		ins.instruction_name = ins_name
+		ins.scale = Vector2(Config.EDITOR_SCHEMATIC_SCALE,Config.EDITOR_SCHEMATIC_SCALE)
+		SCHEMATIC_CONTAINER.call_deferred("add_child", ins)
+		await ins.on_ready
+		ins.set_disable(true)
+		start.y += (ins.get_size().y + Config.COMPONENT_SPACE_Y) * Config.EDITOR_SCHEMATIC_SCALE
+		
+		
+		
+func resize():
+	var view : Rect2 = get_viewport_rect()
+	if OS.get_name() == "Android":
+		Config.TOOL_BAR_HEIGHT *= 3
+	TASK_BAR.position = Vector2.ZERO
+	TASK_BAR.size = Vector2(view.size.x, Config.TOOL_BAR_HEIGHT)
+	
+	LIVECODE_PANEL.position = Vector2(view.size.x - LIVECODE_PANEL.size.x, TASK_BAR.size.y)
+	LIVECODE_PANEL.size.y = view.size.y - TASK_BAR.size.y
+	
+	SCHEMATIC_PANEL.position = Vector2(0, TASK_BAR.size.y)
+	SCHEMATIC_PANEL.size.y =  view.size.y - TASK_BAR.size.y
+	
+	LOG_PANEL.on_resize()
+	
+func show_live_code(value : bool):
+	LIVECODE_PANEL.visible = value
+	
+func show_schematic(value : bool):
+	SCHEMATIC_PANEL.visible = value
+	
 func add_instruction(instruction_name : String) -> Instruction:
 	if get_tree().get_nodes_in_group("Instruction").size() > 1000:
 		return
 	var ins : Instruction = load(instruction_dic[instruction_name]).new(instruction_name)
-	INSTRUCTION_CONTAINER.call_deferred("add_child", ins)
+	call_deferred("add_child", ins)
 	ins.add_to_group("Instruction")
 	ins.add_to_group("Drag")
 	ins.iid = Config.getIID()
+	ins.global_position = get_global_mouse_position()
 	await ins.on_ready
 	on_instruction_added.emit()
 	return ins
@@ -344,6 +386,8 @@ func set_line(start : FlowStartInstruction) -> void:
 
 func reset_line(start : FlowStartInstruction) -> void:
 	Config.current_line = Config.START_LINE
+	for ins in get_tree().get_nodes_in_group("Instruction"):
+		ins.reset_line()
 	if is_instance_valid(start):
 		set_line(start)
 

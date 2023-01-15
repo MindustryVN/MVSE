@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://0rdm1q8faxw4"]
+[gd_scene load_steps=2 format=3 uid="uid://0rdm1q8faxw4"]
 
 [ext_resource type="Script" path="res://scene/instruction/Base/InstructionOutput.gd" id="1_wy8q4"]
-
-[sub_resource type="Gradient" id="Gradient_2s04v"]
-colors = PackedColorArray(0, 0, 0.67451, 1, 1, 0.2, 1, 1)
 
 [node name="InstructionOutput" type="Node2D"]
 script = ExtResource("1_wy8q4")
@@ -17,7 +14,6 @@ size_flags_vertical = 3
 [node name="Line2D" type="Line2D" parent="."]
 top_level = true
 width = 4.0
-gradient = SubResource("Gradient_2s04v")
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 1

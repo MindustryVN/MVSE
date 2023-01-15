@@ -12,8 +12,9 @@ var component : Dictionary = {}
 
 var disabled : bool = false
 
-var line = -1
 var iid = -1
+var line = -1
+var line_set : bool = false
 
 signal on_drag
 signal on_ready
@@ -43,16 +44,24 @@ func set_disable(value : bool) -> void:
 			child.set_disable(value) 
 
 func set_line() -> void:
+	if line_set:
+		return
+		
 	#Display line
 	if not self is FlowStartInstruction:
 		if component.has("line"):
 			component["line"].text = str(Config.current_line)
-		
+	
 	Config.current_line += 1
 	line = Config.current_line
-
+	line_set = true
+	
 	for o in output.values():
 		o.set_line()
+	
+func reset_line() -> void:
+	line_set = false
+	line = -1
 
 func get_size() -> Vector2:
 	return component["InstructionBackground"].size
@@ -89,12 +98,12 @@ func delete() -> void:
 	queue_free()
 
 func add_output(output_name : String):
-	var ins = load("res://scene/instruction/base/InstructionOutput.tscn").instantiate()
+	var ins = preload("res://scene/instruction/Base/InstructionOutput.tscn").instantiate()
 	ins.set_name( output_name) 
 	output[output_name] = ins
 
 func add_input(input_name : String):
-	var ins = load("res://scene/instruction/base/InstructionInput.tscn").instantiate()
+	var ins = preload("res://scene/instruction/Base/InstructionInput.tscn").instantiate()
 	ins.set_name( input_name) 
 	input[input_name] = ins
 
@@ -102,12 +111,11 @@ func add_input(input_name : String):
 func drag(pos : Vector2):
 	if disabled:
 		return
-	global_position = pos
-	top_level = true
+	global_position = pos.snapped(Vector2(Config.INSTRUCTION_SNAP,Config.INSTRUCTION_SNAP))
 	on_drag.emit()
 
 func drop():
-	top_level = false
+	pass
 
 func get_line() -> int:
 	return line

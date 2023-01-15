@@ -1,6 +1,7 @@
 extends PanelContainer
 
 var is_resizing : bool = false
+var e
 
 @onready var LINE_EDIT : LineEdit = $VBoxContainer/SearchBox
 
@@ -9,7 +10,6 @@ func _ready():
 	LINE_EDIT.focus_exited.connect(_on_line_edit_focus_exited.bind())
 	
 	var style = StyleBoxFlat.new()
-	style.set_border_width_all(2)
 	style.border_width_right = Config.PANEL_BORDER_SIZE
 	style.border_color = Config.PANEL_BORDER_COLOR
 	style.bg_color = Config.PANEL_BACKGROUND_COLOR
@@ -17,10 +17,15 @@ func _ready():
 	add_theme_stylebox_override("panel",style)
 	
 	size.x = get_viewport_rect().size.x/5
-	
 
-func on_click(click_position : Vector2) -> bool:
+func _input(event: InputEvent) -> void:
+	e = event
+
+func on_click() -> bool:
 	# Resize live code window
+	if e == null:
+		return false
+	var click_position : Vector2 = e.position
 	if abs(click_position.x - global_position.x - size.x) <= Config.PANEL_BORDER_SIZE:
 		Config.is_resizing = true
 		is_resizing = true
@@ -31,7 +36,10 @@ func on_release():
 	Config.is_resizing = false
 	is_resizing = false
 
-func on_drag(drag_position : Vector2) -> bool:
+func on_drag() -> bool:
+	if e == null:
+		return false
+	var drag_position : Vector2 = e.position
 	if Config.is_resizing and is_resizing:
 		size.x = clamp(drag_position.x , get_viewport_rect().size.x * (Config.MIN_LIVE_CODE_SIZE),get_viewport_rect().size.x * (Config.MAX_LIVE_CODE_SIZE))
 		return true

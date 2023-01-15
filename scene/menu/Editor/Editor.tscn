@@ -1,29 +1,20 @@
-[gd_scene load_steps=18 format=3 uid="uid://bqc000t67w6tv"]
+[gd_scene load_steps=18 format=3 uid="uid://b2nmn21nchbg7"]
 
 [ext_resource type="Script" path="res://scene/menu/Editor/Editor.gd" id="1_nvkhc"]
 [ext_resource type="Script" path="res://scene/menu/Editor/CameraController.gd" id="2_kwb2o"]
 [ext_resource type="Script" path="res://scene/menu/Editor/LiveCodeContainer.gd" id="3_4fm5q"]
 [ext_resource type="Script" path="res://scene/menu/Editor/SchematicContainer.gd" id="5_txyhk"]
-[ext_resource type="Script" path="res://scene/menu/Editor/SettingUI.gd" id="6_4411a"]
+[ext_resource type="Script" path="res://scene/menu/Editor/TaskBar.gd" id="6_hc6fw"]
+[ext_resource type="Script" path="res://scene/menu/Editor/FileTaskBarButton.gd" id="7_7cqqb"]
 [ext_resource type="Script" path="res://scene/menu/Editor/LogPanel.gd" id="7_oeyp2"]
+[ext_resource type="Script" path="res://scene/menu/Editor/TaskBarButton.gd" id="7_rkqjg"]
+[ext_resource type="Script" path="res://scene/menu/Editor/EditTaskBarButton.gd" id="8_m76ab"]
 
 [sub_resource type="Environment" id="Environment_stjhn"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 1.53
-glow_strength = 0.92
-glow_bloom = 0.27
+glow_bloom = 1.0
 glow_blend_mode = 0
-glow_hdr_threshold = 0.0
-glow_hdr_scale = 1.18
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vy6wh"]
-bg_color = Color(0, 0, 0, 0.576471)
-border_width_left = 1
-border_width_top = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08n7e"]
 bg_color = Color(0, 0, 0, 1)
@@ -49,34 +40,18 @@ Button/styles/hover = SubResource("StyleBoxFlat_dfeyn")
 Button/styles/normal = SubResource("StyleBoxFlat_s43b4")
 Button/styles/pressed = SubResource("StyleBoxFlat_wefy6")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ikp72"]
-bg_color = Color(0, 0, 0, 0.580392)
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-border_blend = true
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qh7x1"]
 bg_color = Color(0, 0, 0, 1)
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sltfm"]
-bg_color = Color(0, 0, 0, 0.443137)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_color = Color(1, 1, 1, 1)
-border_blend = true
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ifvr"]
-bg_color = Color(0.494118, 0.494118, 0.494118, 0.686275)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
 [node name="Editor" type="Node2D"]
@@ -90,7 +65,6 @@ current = true
 script = ExtResource("2_kwb2o")
 
 [node name="EditorUI" type="CanvasLayer" parent="."]
-layer = 100
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="EditorUI"]
 
@@ -107,7 +81,6 @@ offset_top = 5.0
 offset_right = 1149.0
 offset_bottom = 644.0
 size_flags_horizontal = 8
-theme_override_styles/panel = SubResource("StyleBoxFlat_vy6wh")
 script = ExtResource("3_4fm5q")
 
 [node name="Croll" type="ScrollContainer" parent="EditorUI/LiveCodePanel"]
@@ -126,7 +99,6 @@ text = "Copy"
 [node name="SchematicPanel" type="PanelContainer" parent="EditorUI"]
 offset_right = 277.0
 offset_bottom = 644.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_ikp72")
 script = ExtResource("5_txyhk")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SchematicPanel"]
@@ -146,43 +118,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="SettingUI" type="VFlowContainer" parent="EditorUI"]
-offset_right = 1918.0
-offset_bottom = 40.0
-script = ExtResource("6_4411a")
-
-[node name="Button" type="Button" parent="EditorUI/SettingUI"]
-layout_mode = 2
-text = "Setting"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorUI/SettingUI"]
-visible = false
-layout_mode = 2
-
-[node name="LiveCode" type="CheckBox" parent="EditorUI/SettingUI/VBoxContainer"]
-layout_mode = 2
-text = "Show live code panel"
-
-[node name="VFlowContainer" type="VFlowContainer" parent="EditorUI/SettingUI"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="EditorUI/SettingUI/VFlowContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 6
-text = "FPS"
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="EditorUI/SettingUI/VFlowContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-vertical_alignment = 1
-
-[node name="Label3" type="Label" parent="EditorUI/SettingUI/VFlowContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-vertical_alignment = 1
-
 [node name="LogPanel" type="PanelContainer" parent="EditorUI"]
 offset_left = 3.0
 offset_top = 901.0
@@ -190,7 +125,6 @@ offset_right = 1921.0
 offset_bottom = 1002.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_sltfm")
 script = ExtResource("7_oeyp2")
 
 [node name="MarginContainer" type="MarginContainer" parent="EditorUI/LogPanel"]
@@ -201,16 +135,93 @@ theme_override_constants/margin_left = 10
 layout_mode = 2
 size_flags_horizontal = 0
 
+[node name="TaskBar" type="MenuBar" parent="EditorUI"]
+anchor_right = 1.0
+offset_bottom = 55.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("6_hc6fw")
+
+[node name="Panel" type="Panel" parent="EditorUI/TaskBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorUI/TaskBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="File" type="MenuButton" parent="EditorUI/TaskBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "File"
+switch_on_hover = true
+item_count = 2
+popup/item_0/text = "Save"
+popup/item_0/checkable = 1
+popup/item_0/checked = true
+popup/item_0/id = 0
+popup/item_1/text = "Show schematic panel"
+popup/item_1/checkable = 1
+popup/item_1/checked = true
+popup/item_1/id = 1
+script = ExtResource("7_7cqqb")
+
+[node name="View" type="MenuButton" parent="EditorUI/TaskBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "View"
+switch_on_hover = true
+item_count = 2
+popup/item_0/text = "Show live code panel"
+popup/item_0/checkable = 1
+popup/item_0/checked = true
+popup/item_0/id = 0
+popup/item_1/text = "Show schematic panel"
+popup/item_1/checkable = 1
+popup/item_1/checked = true
+popup/item_1/id = 1
+script = ExtResource("7_rkqjg")
+
+[node name="Edit" type="MenuButton" parent="EditorUI/TaskBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edit"
+item_count = 3
+popup/item_0/text = "Paste"
+popup/item_0/checkable = 1
+popup/item_0/id = 0
+popup/item_1/text = "Delete"
+popup/item_1/checkable = 1
+popup/item_1/id = 1
+popup/item_2/text = "Select"
+popup/item_2/id = 2
+script = ExtResource("8_m76ab")
+
+[node name="Label" type="Label" parent="EditorUI/TaskBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+text = "FPS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="SelectRectangle" type="Node2D" parent="."]
 position = Vector2(20000, 0)
 
 [node name="Panel" type="Panel" parent="SelectRectangle"]
+modulate = Color(0.133333, 1, 1, 1)
 offset_right = 40.0
 offset_bottom = 40.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_5ifvr")
-
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
-enable_node_path = NodePath(".")
 
 [connection signal="item_rect_changed" from="EditorUI/LiveCodePanel" to="EditorUI/LogPanel" method="_on_live_code_panel_item_rect_changed"]
 [connection signal="resized" from="EditorUI/LiveCodePanel" to="EditorUI/LogPanel" method="_on_live_code_panel_resized"]

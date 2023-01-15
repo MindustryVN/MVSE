@@ -45,7 +45,7 @@ func update(_color : Color) -> void:
 			
 	set_default_io(get_parent().input, get_parent().output)
 
-	
+
 func set_default_io(input : Dictionary, output : Dictionary):
 	var output_size : int = output.size()
 	for i in range(0, output_size):
